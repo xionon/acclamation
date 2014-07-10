@@ -1,0 +1,42 @@
+<!DOCTYPE html >
+<html>
+  <head>
+    <title>Acclamation Moderator</title>
+    <style type="text/css">
+      #left-column {
+        font-family: Helvetica, Arial, sans-serif;
+        width: 20%;
+      }
+      #left-column section {
+        text-align: center;
+      }
+      #left-column section#vote-results {
+      }
+      #left-column section#clock {
+        font-size: 5em;
+        font-weight: bold;
+        padding: 0.5em 0;
+      }
+    </style>
+    <script type="text/javascript" src="/static/acclamation.js"></script>
+    <script type="text/javascript" src="/_js/socket.io.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        (new Acclamation.Clock("#clock"));
+      });
+    </script>
+  </head>
+  <body>
+    <div id="left-column">
+      <section id="qr-code">
+        <img src="/session/qr_code" alt="QR code to join the retro"/>
+      </section>
+      <section id="vote-results">
+        Still waiting for votes...
+      </section>
+      <section id ="clock"></section>
+    </div>
+    <div id="content">
+    </div>
+  </body>
+</html>

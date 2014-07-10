@@ -1,2 +1,2 @@
-acclamatio
-==========
+acclamation
+===========
