@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Acclamation Moderator</title>
+    <link rel="stylesheet" type="text/css" href="/static/acclamation.css"/>
     <style type="text/css">
       #left-column {
         font-family: Helvetica, Arial, sans-serif;
@@ -23,6 +24,10 @@
     <script type="text/javascript">
       $(function() {
         (new Acclamation.Clock("#clock"));
+        var socket = io("http://localhost");
+        socket.on("vote", function(data) {
+          console.log(data);
+        });
       });
     </script>
   </head>
@@ -37,6 +42,7 @@
       <section id ="clock"></section>
     </div>
     <div id="content">
+      <section id="cards"></section>
     </div>
   </body>
 </html>
