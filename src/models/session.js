@@ -1,6 +1,7 @@
-var uuid = require("uuid");
+var config = require("./../config");
 var qr = require("qr-image");
 var redis = require("./../redis_client");
+var uuid = require("uuid");
 
 module.exports = function() {
   var id = null;
@@ -30,6 +31,6 @@ module.exports = function() {
   };
 
   this.qr = function() {
-    return qr.image("http://localhost:8080/client/" + this.id(), { type: "png" });
+    return qr.image(config.server.base_url + "/client/" + this.id(), { type: "png" });
   };
 };
