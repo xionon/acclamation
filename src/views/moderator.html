@@ -4,10 +4,6 @@
     <title>Acclamation Moderator</title>
     <link rel="stylesheet" type="text/css" href="/static/acclamation.css"/>
     <style type="text/css">
-      #left-column {
-        font-family: Helvetica, Arial, sans-serif;
-        width: 20%;
-      }
       #left-column section {
         text-align: center;
       }
@@ -32,17 +28,19 @@
     </script>
   </head>
   <body>
-    <div id="left-column">
-      <section id="qr-code">
-        <img src="/session/qr_code" alt="QR code to join the retro"/>
-      </section>
-      <section id="vote-results">
-        Still waiting for votes...
-      </section>
-      <section id ="clock"></section>
-    </div>
-    <div id="content">
-      <section id="cards"></section>
+    <div class="pure-g">
+      <div id="left-column" class="pure-u-1-5">
+        <section id="qr-code">
+          <img src="/session/qr_code" alt="QR code to join the retro"/>
+        </section>
+        <section id="vote-results">
+          Still waiting for votes...
+        </section>
+        <section id ="clock"></section>
+      </div>
+      <div id="content" class="pure-u-4-5">
+        <section id="cards"></section>
+      </div>
     </div>
   </body>
 </html>
