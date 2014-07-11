@@ -4,18 +4,20 @@ module.exports = function(grunt) {
 
     concat: {
       options: {
-        separator: ';'
+        separator: ";\n"
       },
       "javascript": {
         src: [
           "bower_components/jquery/dist/jquery.min.js",
+          "bower_components/chartjs/Chart.min.js",
           "tmp/_minified_javascript/**/*.js"
         ],
         dest: "dist/static/<%= pkg.name %>.js"
       },
-      "javascript:dev": {
+      "javascript_dev": {
         src: [
           "bower_components/jquery/dist/jquery.min.js",
+          "bower_components/chartjs/Chart.min.js",
           "src/static/**/*.js"
         ],
         dest: "dist/static/<%= pkg.name %>.js"
@@ -27,7 +29,7 @@ module.exports = function(grunt) {
         ],
         dest: "dist/static/<%= pkg.name %>.css"
       },
-      "stylesheets:dev": {
+      "stylesheets_dev": {
         src: [
           "bower_components/pure/*-min.css",
           "src/static/**/*.css"
@@ -64,11 +66,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-uglify");
 
   grunt.registerTask("assets:javascript:install", ["uglify:javascript", "concat:javascript"]);
-  grunt.registerTask("assets:javascript:install:dev", ["concat:javascript:dev"]);
+  grunt.registerTask("assets:javascript:install_dev", ["concat:javascript_dev"]);
 
   grunt.registerTask("assets:stylesheets:install", ["cssmin:minify", "concat:stylesheets"]);
-  grunt.registerTask("assets:stylesheets:install:dev", ["concat:stylesheets:dev"]);
+  grunt.registerTask("assets:stylesheets:install_dev", ["concat:stylesheets_dev"]);
 
   grunt.registerTask("assets:install", ["assets:javascript:install", "assets:stylesheets:install"]);
-  grunt.registerTask("assets:install:dev", ["assets:javascript:install:dev", "assets:stylesheets:install:dev"]);
+  grunt.registerTask("assets:install_dev", ["assets:javascript:install_dev", "assets:stylesheets:install_dev"]);
 };

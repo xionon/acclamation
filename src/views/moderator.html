@@ -20,10 +20,7 @@
     <script type="text/javascript">
       $(function() {
         (new Acclamation.Clock("#clock"));
-        var socket = io("http://localhost");
-        socket.on("vote", function(data) {
-          console.log(data);
-        });
+        (new Acclamation.Temperature("#temperature"));
       });
     </script>
   </head>
@@ -33,8 +30,8 @@
         <section id="qr-code">
           <img src="/session/qr_code" alt="QR code to join the retro"/>
         </section>
-        <section id="vote-results">
-          Still waiting for votes...
+        <section id="temperature_section">
+          <canvas id="temperature"></canvas>
         </section>
         <section id ="clock"></section>
       </div>

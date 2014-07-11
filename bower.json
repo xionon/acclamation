@@ -21,6 +21,7 @@
     "tests"
   ],
   "dependencies": {
+    "chartjs": "1.0.1-beta.2",
     "jquery": "2.1.1",
     "pure": "0.5.0"
   }

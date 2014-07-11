@@ -6,7 +6,7 @@ var routes = [
   "client",
   "moderator",
   "session",
-  "survey"
+  "temperature"
 ];
 
 routes.map(function(route) {

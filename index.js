@@ -15,7 +15,8 @@ var app = opinion({
 app.get("/client/:sessionid", routes.client);
 app.get("/moderator", routes.moderator.index);
 app.get("/session/qr_code", routes.session.qr);
-app.get("/survey", routes.survey);
+app.get("/temperature", routes.temperature.index);
+app.post("/temperature/vote/:key", routes.temperature.vote);
 
 app.get('/', function* () {
   this.body = "Hello world!";
