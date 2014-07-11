@@ -26,10 +26,11 @@
         datasets: [
           {
             label: "Temperature",
+            fillColor: "rgba(64, 159, 210, 0.7)",
             data: [0, 0, 0, 0, 0]
           }
         ]
-      });
+      }, {responsive: true});
     };
 
     this.render = function(data) {

@@ -19,8 +19,11 @@
     <script type="text/javascript" src="/_js/socket.io.js"></script>
     <script type="text/javascript">
       $(function() {
-        (new Acclamation.Clock("#clock"));
-        (new Acclamation.Temperature("#temperature"));
+        window.acclamation = {
+          heightAdapter: (new Acclamation.HeightAdapter()),
+          clock: (new Acclamation.Clock("#clock")),
+          temperature: (new Acclamation.Temperature("#temperature"))
+        };
       });
     </script>
   </head>
@@ -30,7 +33,7 @@
         <section id="qr-code">
           <img src="/session/qr_code" alt="QR code to join the retro"/>
         </section>
-        <section id="temperature_section">
+        <section id="temperature-section">
           <canvas id="temperature"></canvas>
         </section>
         <section id ="clock"></section>
