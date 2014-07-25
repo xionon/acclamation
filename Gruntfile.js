@@ -80,11 +80,11 @@ module.exports = function(grunt) {
         tasks: ["assets:javascript:install_dev"]
       },
       "stylesheets": {
-        files: ["src/static/**/*.css"],
+        files: ["src/static/*.css", "src/static/**/*.css"],
         tasks: ["assets:stylesheets:install"]
       },
       "stylesheets_dev": {
-        files: ["src/static/**/*.css"],
+        files: ["src/static/*.css", "src/static/**/*.css"],
         tasks: ["assets:stylesheets:install_dev"]
       }
     }
@@ -103,7 +103,4 @@ module.exports = function(grunt) {
 
   grunt.registerTask("assets:install", ["assets:javascript:install", "assets:stylesheets:install"]);
   grunt.registerTask("assets:install_dev", ["assets:javascript:install_dev", "assets:stylesheets:install_dev"]);
-
-  grunt.registerTask("assets:watch", ["watch:javascript", "watch:stylesheets"]);
-  grunt.registerTask("assets:watch_dev", ["watch:javascript_dev", "watch:stylesheets_dev"]);
 };
