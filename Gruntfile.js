@@ -24,17 +24,27 @@ module.exports = function(grunt) {
       },
       "stylesheets": {
         src: [
-          "bower_components/pure/*-min.css",
           "tmp/_minified_stylesheets/**/*.css"
         ],
         dest: "dist/static/<%= pkg.name %>.css"
       },
       "stylesheets_dev": {
         src: [
-          "bower_components/pure/*-min.css",
           "src/static/**/*.css"
         ],
         dest: "dist/static/<%= pkg.name %>.css"
+      },
+      "pure": {
+        src: [
+          "bower_components/pure/pure-min.css"
+        ],
+        dest: "dist/static/pure.css"
+      },
+      "pure_dev": {
+        src: [
+          "bower_components/pure/pure.css"
+        ],
+        dest: "dist/static/pure.css"
       }
     },
 
@@ -58,19 +68,42 @@ module.exports = function(grunt) {
         dest: "tmp/_minified_stylesheets",
         ext: ".min.css"
       }
+    },
+
+    watch: {
+      "javascript": {
+        files: ["src/static/**/*.js"],
+        tasks: ["assets:javascript:install"]
+      },
+      "javascript_dev": {
+        files: ["src/static/**/*.js"],
+        tasks: ["assets:javascript:install_dev"]
+      },
+      "stylesheets": {
+        files: ["src/static/**/*.css"],
+        tasks: ["assets:stylesheets:install"]
+      },
+      "stylesheets_dev": {
+        files: ["src/static/**/*.css"],
+        tasks: ["assets:stylesheets:install_dev"]
+      }
     }
   });
 
   grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-cssmin");
   grunt.loadNpmTasks("grunt-contrib-uglify");
+  grunt.loadNpmTasks("grunt-contrib-watch");
 
   grunt.registerTask("assets:javascript:install", ["uglify:javascript", "concat:javascript"]);
   grunt.registerTask("assets:javascript:install_dev", ["concat:javascript_dev"]);
 
-  grunt.registerTask("assets:stylesheets:install", ["cssmin:minify", "concat:stylesheets"]);
-  grunt.registerTask("assets:stylesheets:install_dev", ["concat:stylesheets_dev"]);
+  grunt.registerTask("assets:stylesheets:install", ["cssmin:minify", "concat:stylesheets", "concat:pure"]);
+  grunt.registerTask("assets:stylesheets:install_dev", ["concat:stylesheets_dev", "concat:pure_dev"]);
 
   grunt.registerTask("assets:install", ["assets:javascript:install", "assets:stylesheets:install"]);
   grunt.registerTask("assets:install_dev", ["assets:javascript:install_dev", "assets:stylesheets:install_dev"]);
+
+  grunt.registerTask("assets:watch", ["watch:javascript", "watch:stylesheets"]);
+  grunt.registerTask("assets:watch_dev", ["watch:javascript_dev", "watch:stylesheets_dev"]);
 };

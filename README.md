@@ -22,3 +22,8 @@ Run the server:
     grunt assets:install
     npm start
 
+A Procfile is provided for development:
+
+    foreman start
+
+This runs the application inside of `supervisor`, watching for changes to any non-vendored ".js" files.  It also runs `grunt assets:watch` to recompile JavaScript and CSS assets when they change.
