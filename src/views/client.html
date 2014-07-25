@@ -1,0 +1,53 @@
+<!DOCTYPE html >
+<html>
+  <head>
+    <title>Acclamation</title>
+    <link rel="stylesheet" type="text/css" href="/static/pure.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/acclamation.css"/>
+    <script type="text/javascript" src="/static/acclamation.js"></script>
+    <script type="text/javascript" src="/_js/socket.io.js"></script>
+    <script type="text/javascript">
+      window.acclamation = {
+        client: (new Acclamation.Client)
+      };
+    </script>
+  </head>
+  <body>
+    <section id="loader" class="loader">
+      Loading...
+    </section>
+    <section id="temperature" style="display: none;">
+      <h1>How are things?</h1>
+      <p>
+        Rate your experience since the last retrospective.
+      </p>
+      <div id="temperature_form">
+        <div class="btn-group">
+          <button id="temperature_rating_5" class="pure-button pure-input-1-5" value="5">5</button>
+          <label for="temperature_rating_5">I &lt;3 my job!</label>
+        </div>
+        <div class="btn-group">
+          <button id="temperature_rating_4" class="pure-button pure-input-1-5" value="4">4</button>
+          <label for="temperature_rating_4">I'm pretty happy</label>
+        </div>
+        <div class="btn-group">
+          <button id="temperature_rating_3" class="pure-button pure-input-1-5" value="3">3</button>
+          <label for="temperature_rating_3">Things aren't bad</label>
+        </div>
+        <div class="btn-group">
+          <button id="temperature_rating_2" class="pure-button pure-input-1-5" value="2">2</button>
+          <label for="temperature_rating_2">Things aren't great</label>
+        </div>
+        <div class="btn-group">
+          <button id="temperature_rating_1" class="pure-button pure-input-1-5" value="1">1</button>
+          <label for="temperature_rating_1">I don't want to live on this planet anymore</label>
+        </div>
+      </div>
+    </section>
+    <section id="cardwall" class="hidden">
+    </section>
+    <footer class="hidden">
+      <button id="add_card_btn" class="pure-button pure-button-primary">+ New Card</button>
+    </footer>
+  </body>
+</html>

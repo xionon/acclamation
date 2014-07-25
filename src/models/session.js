@@ -2,6 +2,7 @@ var config = require("./../config");
 var qr = require("qr-image");
 var redis = require("./../redis_client");
 var uuid = require("uuid");
+var wrapper = require("co-redis");
 
 module.exports = function() {
   var id = null;
@@ -11,23 +12,17 @@ module.exports = function() {
     return id;
   };
 
-  this.create = function() {
+  this.create = function* () {
     id = uuid.v4();
-    return this;
+    yield wrapper(redis).set("active_session_id", id);
   };
 
-  this.load = function* (onload, onerror) {
-    redis.get("active_session_id", function(err, val) {
-      id = val;
+  this.destroy = function* () {
+    yield wrapper(redis).del("active_session_id");
+  };
 
-      if (id !== null && typeof onload === 'function') {
-        onload.call(this, self);
-      } else if (id === null && typeof onerror === 'function') {
-        onerror.call(this, err);
-      }
-    });
-
-    return this;
+  this.load = function* () {
+    id = yield wrapper(redis).get("active_session_id");
   };
 
   this.qr = function() {

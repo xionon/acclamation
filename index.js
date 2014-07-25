@@ -12,9 +12,11 @@ var app = opinion({
   statics: "dist"
 });
 
-app.get("/client/:sessionid", routes.client);
+app.get("/client/:session_id", routes.client.index);
 app.get("/moderator", routes.moderator.index);
 app.get("/session/qr_code", routes.session.qr);
+app.get("/session/start", routes.session.start);
+app.get("/session/destroy", routes.session.destroy);
 app.get("/temperature", routes.temperature.index);
 app.post("/temperature/vote/:key", routes.temperature.vote);
 
