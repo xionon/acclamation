@@ -3,7 +3,6 @@ var Temperature = require("./../models/temperature");
 module.exports = {
   index: function* (next) {
     var temperature = new Temperature();
-    var self = this;
 
     yield temperature.load();
 

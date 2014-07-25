@@ -16,7 +16,7 @@ module.exports = function() {
     return this;
   };
 
-  this.load = function(onload, onerror) {
+  this.load = function* (onload, onerror) {
     redis.get("active_session_id", function(err, val) {
       id = val;
 
