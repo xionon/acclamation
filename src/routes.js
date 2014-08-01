@@ -3,6 +3,7 @@
 module.exports = {};
 
 var routes = [
+  "cards",
   "client",
   "moderator",
   "session",

@@ -16,6 +16,34 @@
 
 /* Client application */
 
+.card {
+  border: solid 1px;
+  border-radius: 8px;
+  font-size: 0.8em;
+  margin: 8px 12px;
+  padding: 12px 12px 12px 48px;
+}
+
+.card.card-happy {
+  background-color: #ECFFF2;
+  border-color: #90EE90;
+}
+
+.card.card-sad {
+  background-color: #FFEECF;
+  border-color: #FFA500;
+}
+
+.card.card-idea {
+  background-color: #FFF8CF;
+  border-color: #FFD700;
+}
+
+.card.card-shoutout {
+  background-color: #E1F4FF;
+  border-color: #409FD2;
+}
+
 /* Utility */
 
 .centered {

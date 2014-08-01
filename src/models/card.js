@@ -36,13 +36,17 @@ module.exports = function(options) {
     }
   };
 
-  this.toJson = function() {
-    return JSON.stringify({
+  this.toPlainObject = function() {
+    return {
       id: this.id,
       type: this.type,
       topic: this.topic,
       title: this.title,
       votes: this.votes
-    });
+    };
+  };
+
+  this.toJson = function() {
+    return JSON.stringify(this.toPlainObject());
   };
 };

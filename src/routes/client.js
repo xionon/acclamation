@@ -1,3 +1,4 @@
+var Card = require("../models/card");
 var CardRepository = require("../models/card_repository");
 var Session = require("../models/session");
 
@@ -6,6 +7,12 @@ module.exports = {
     var session = new Session();
 
     yield session.load();
+
+    card = new Card({
+      topic: "idea",
+      title: "Do something productive"
+    });
+    yield card.save();
 
     var cardRepository = new CardRepository();
     all = yield cardRepository.all();

@@ -12,6 +12,7 @@ var app = opinion({
   statics: "dist"
 });
 
+app.get("/cards", routes.cards.index);
 app.get("/client/:session_id", routes.client.index);
 app.get("/moderator", routes.moderator.index);
 app.get("/session/qr_code", routes.session.qr);
