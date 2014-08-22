@@ -1,7 +1,11 @@
 /* jshint camelcase: false */
-module.exports = function(grunt) {
-  'use strict';
+'use strict';
 
+var faker = require('faker');
+var redis = require('./src/redis_client');
+var uuid = require('uuid');
+
+module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
@@ -144,4 +148,67 @@ module.exports = function(grunt) {
   grunt.registerTask('spec', ['redis:start', 'jasmine_node', 'redis:stop']);
 
   grunt.registerTask('check', ['spec', 'jshint']);
+
+  grunt.registerTask('db:flush', function() {
+    var done = this.async();
+    redis.flushdb(done);
+  });
+
+  grunt.registerTask('db:populate', function() {
+    var done = this.async();
+    var commands = [];
+    var sendCommand, i, tempval, id, topic, title;
+
+    // Session ID
+    commands.push(['SET', 'active_session_id', uuid.v4()]);
+
+    // Temperature
+    for (i = 0; i < 40; i++) {
+      tempval = faker.random.array_element([1, 2, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5]);
+      commands.push(['HINCRBY', 'temperature', String(tempval), '1']);
+    }
+
+    // Cards
+    for (i = 0; i < 12; i++) {
+      id = uuid.v4();
+      topic = faker.random.array_element(['happy', 'sad', 'shoutout', 'idea']);
+      title = topic === 'shoutout' ?
+        (faker.Name.firstName() + ' for ' + faker.random.bs_buzz() + ' ' + faker.random.bs_noun()) :
+        (faker.Company.bs());
+
+      commands.push([
+        'HSET',
+        'cards',
+        id,
+        JSON.stringify({
+          id: id,
+          type: 'card',
+          topic: topic,
+          title: title
+        })
+      ]);
+    }
+
+    // Send it all to redis
+    sendCommand = function() {
+      var args, fn;
+
+      if (commands.length === 0) {
+        done();
+        return;
+      }
+
+      args = commands.shift();
+      args.push(sendCommand);
+      fn = args.shift();
+
+      console.log(fn); console.log(args);
+
+      redis[fn].apply(redis, args);
+    };
+
+    sendCommand();
+  });
+
+  grunt.registerTask('db:do_over', ['db:flush', 'db:populate']);
 };

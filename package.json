@@ -43,6 +43,7 @@
     "uuid": "1.4.1"
   },
   "devDependencies": {
+    "faker": "1.1.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-jasmine-node": "0.2.1",
     "grunt-shell-spawn": "^0.3.0",
