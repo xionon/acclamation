@@ -1,17 +1,25 @@
 /*! acclamation.css */
 .message {
   background: #e0e0e0;
+  margin: 16px;
 }
 
 .message-box {
   background: #f0f0f0;
   border: solid 1px #999;
   border-radius: 12px;
+  box-sizing: border-box;
   padding: 32px;
 }
 
 .message-box h1 {
   margin-top: 0;
+}
+
+@media screen and (max-width: 35.5em) {
+  .r-button-sm {
+    display: block;
+  }
 }
 
 /* Client application */

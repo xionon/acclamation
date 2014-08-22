@@ -43,13 +43,15 @@ module.exports = function(grunt) {
       },
       'pure': {
         src: [
-          'bower_components/pure/pure-min.css'
+          'bower_components/pure/pure-min.css',
+          'bower_components/pure/grids-responsive-min.css'
         ],
         dest: 'public/stylesheets/pure.css'
       },
       'pure_dev': {
         src: [
-          'bower_components/pure/pure.css'
+          'bower_components/pure/pure.css',
+          'bower_components/pure/grids-responsive.css'
         ],
         dest: 'public/stylesheets/pure.css'
       }
