@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   var Temperature = function(container) {
     var self = this;
 
@@ -10,23 +12,21 @@
     };
 
     this.socketConnect = function() {
-      var socket = io("http://" + window.location.hostname);
-      socket.on("temperature", self.render);
+      var socket = io.connect();
+      socket.on('temperature', self.render);
     };
 
     this.load = function() {
-      return $.get("/temperature");
+      return $.get('/temperature');
     };
 
     this.initializeChart = function(data) {
-      var values = [];
-
-      self.chart = new Chart(self.container.get(0).getContext("2d")).Bar({
-        labels: ["1", "2", "3", "4", "5"],
+      self.chart = new Chart(self.container.get(0).getContext('2d')).Bar({
+        labels: ['1', '2', '3', '4', '5'],
         datasets: [
           {
-            label: "Temperature",
-            fillColor: "rgba(64, 159, 210, 0.7)",
+            label: 'Temperature',
+            fillColor: 'rgba(64, 159, 210, 0.7)',
             data: [0, 0, 0, 0, 0]
           }
         ]

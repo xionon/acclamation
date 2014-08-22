@@ -1,5 +1,8 @@
 .grunt
+.ruby-version
 bower_components
 dist
+dump.rdb
 node_modules
+src.old
 tmp

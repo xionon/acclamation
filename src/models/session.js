@@ -1,8 +1,9 @@
-var config = require("./../config");
-var qr = require("qr-image");
-var redis = require("./../redis_client");
-var uuid = require("uuid");
-var wrapper = require("co-redis");
+'use strict';
+
+var config = require('../config');
+var qr = require('qr-image');
+var redis = require('../redis_client');
+var uuid = require('uuid');
 
 module.exports = function() {
   var id = null;
@@ -12,20 +13,32 @@ module.exports = function() {
     return id;
   };
 
-  this.create = function* () {
+  this.create = function(done) {
     id = uuid.v4();
-    yield wrapper(redis).set("active_session_id", id);
+    redis.set('active_session_id', id, function(err, res) {
+      if (err !== null) {
+        throw err;
+      }
+
+      done(self);
+    });
   };
 
-  this.destroy = function* () {
-    yield wrapper(redis).del("active_session_id");
+  this.destroy = function () {
+    redis.del('active_session_id');
   };
 
-  this.load = function* () {
-    id = yield wrapper(redis).get("active_session_id");
+  this.load = function (done) {
+    redis.get('active_session_id', function(err, res) {
+      if (err !== null) {
+        throw err;
+      }
+      id = res;
+      done(self);
+    });
   };
 
   this.qr = function() {
-    return qr.image(config.server.base_url + "/client/" + this.id(), { type: "png" });
+    return qr.image(config.server.baseUrl + '/client/' + this.id(), { type: 'png' });
   };
 };

@@ -1,14 +1,23 @@
-"use strict";
+'use strict';
 
-var redis = require("redis");
-var config = require("./config")
+var redis = require('redis');
+var config = require('./config');
+var url = require('url');
 
+/* jshint camelcase: false */
 redis.debug_mode = config.redis.debug;
+/* jshint camelcase: true */
 
-var client = redis.createClient(config.redis.port, config.redis.hostname);
+var redisUrl = url.parse(config.redis.url);
 
-client.on("connect", function() {
-  console.info("Connected to redis on " + config.redis.hostname + ":" + config.redis.port);
+var client = redis.createClient(redisUrl.port, redisUrl.hostname);
+
+if (redisUrl.auth !== null) {
+  client.auth(redisUrl.auth.split(':')[1]);
+}
+
+client.on('connect', function() {
+  console.info('Connected to redis on ' + redisUrl.hostname + ':' + redisUrl.port);
 });
 
 module.exports = client;

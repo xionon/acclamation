@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
 module.exports = {};
 
 var configs = [
-  "server",
-  "redis"
+  'server',
+  'redis'
 ];
 
 configs.map(function(component) {
-  module.exports[component] = require("./../config/" + component);
+  module.exports[component] = require('../config/' + component);
 });

@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   var Client = function() {
     var self = this;
 
@@ -12,12 +14,12 @@
     };
 
     this.showTemperature = function() {
-      $("#loader").hide();
+      $('#loader').hide();
       self.temperature.on();
     };
 
     this.showCardWall = function() {
-      $("#loader").hide();
+      $('#loader').hide();
       self.temperature.off();
       self.cardWall.on();
     };
@@ -30,12 +32,12 @@
     var $temperature;
 
     $(function() {
-      $temperature = $("#temperature");
+      $temperature = $('#temperature');
     });
 
     this.on = function() {
       $temperature.show();
-      $temperature.delegate("button", "click", self.vote);
+      $temperature.delegate('button', 'click', self.vote);
     };
 
     this.off = function() {
@@ -44,7 +46,7 @@
 
     this.vote = function() {
       value = $(this).val();
-      $.post("/temperature/vote/" + value)
+      $.post('/temperature/vote/' + value)
         .success(self.done)
         .error(self.error);
     };
@@ -55,7 +57,7 @@
 
     this.error = function(err) {
       console.error(err);
-      alert("An error occurred.  Refer to the console for more information");
+      alert('An error occurred.  Refer to the console for more information');
     };
   };
 
@@ -64,7 +66,7 @@
     var $cardWall;
 
     $(function() {
-      $cardWall = $("#cardwall");
+      $cardWall = $('#cardwall');
     });
 
     this.on = function() {
@@ -76,7 +78,7 @@
     };
 
     this.loadAll = function() {
-      $.get("/cards")
+      $.get('/cards')
         .success(self.renderAll)
         .error(self.error);
     };
@@ -88,19 +90,19 @@
     };
 
     this.appendCard = function(card) {
-      var $card = $("<div/>");
-      $card.addClass("card")
-        .addClass("card-" + card.topic)
+      var $card = $('<div/>');
+      $card.addClass('card')
+        .addClass('card-' + card.topic)
         .text(card.title)
         .hide();
 
       $cardWall.append($card);
-      $card.fadeIn("fast");
+      $card.fadeIn('fast');
     };
 
     this.error = function(err) {
       console.error(err);
-      alert("An error occurred.  Refer to the console for more information");
+      alert('An error occurred.  Refer to the console for more information');
     };
   };
 

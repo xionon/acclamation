@@ -1,6 +1,7 @@
-var redis = require("../redis_client");
-var uuid = require("uuid");
-var wrapper = require("co-redis");
+'use strict';
+
+var redis = require('../redis_client');
+var uuid = require('uuid');
 
 module.exports = function(options) {
   var self = this;
@@ -8,28 +9,40 @@ module.exports = function(options) {
   options = options || {};
 
   this.id = null;
-  this.type = options.type || "card";
+  this.type = options.type || 'card';
   this.topic = options.topic;
   this.title = options.title;
   this.votes = 0;
 
-  this.load = function* (id) {
-    val = yield wrapper(redis).hget("cards", id);
-    this.fromJson(val);
+  this.load = function(id, done) {
+    redis.hget('cards', id, function(err, res) {
+      if (err !== null) {
+        throw err;
+      }
+
+      self.fromJson(res);
+      done(self);
+    });
   };
 
-  this.save = function* () {
+  this.save = function(done) {
     if (this.id === null) {
       this.id = uuid.v4();
     }
 
-    yield wrapper(redis).hset("cards", this.id, this.toJson());
+    redis.hset('cards', this.id, this.toJson(), function(err, res) {
+      if (err !== null) {
+        throw err;
+      }
+
+      done(self);
+    });
   };
 
   this.fromJson = function(json) {
-    object = JSON.parse(json);
+    var object = JSON.parse(json);
 
-    for (key in object) {
+    for (var key in object) {
       if (object.hasOwnProperty(key) && this.hasOwnProperty(key)) {
         this[key] = object[key];
       }

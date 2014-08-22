@@ -1,30 +1,38 @@
-var redis = require("./../redis_client");
-var wrapper = require("co-redis");
+'use strict';
+
+var redis = require('../redis_client');
 
 module.exports = function() {
-  var values = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0};
+  var values = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0};
   var self = this;
 
   this.getValues = function() {
     return values;
   };
 
-  this.load = function* () {
-    yield [
-      this._loadKey(1),
-      this._loadKey(2),
-      this._loadKey(3),
-      this._loadKey(4),
-      this._loadKey(5)
-    ];
+  this.load = function(done) {
+    redis.hgetall('temperature', function(err, res) {
+      if (err !== null) {
+        throw err;
+      }
+
+      for (var key in res) {
+        if (values.hasOwnProperty(key)) {
+          values[key] = Number(res[key]);
+        }
+      }
+
+      done(self);
+    });
   };
 
-  this.increment = function* (key) {
-    yield wrapper(redis).hincrby("temperature", String(key), 1);
-  };
+  this.increment = function(key, done) {
+    redis.hincrby('temperature', String(key), 1, function(err, res) {
+      if (err !== null) {
+        throw err;
+      }
 
-  this._loadKey = function* (key) {
-    val = yield wrapper(redis).hget("temperature", String(key));
-    values[key] = Number(val) || 0;
+      done(self);
+    });
   };
 };

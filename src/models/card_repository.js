@@ -1,11 +1,17 @@
-var co = require("co");
-var redis = require("../redis_client");
-var wrapper = require("co-redis");
+'use strict';
+
+var redis = require('../redis_client');
 
 module.exports = function() {
-  this.all = function* () {
-    co(function* () {
-      yield wrapper(redis).hgetall("cards")
+  var self = this;
+
+  this.all = function(done) {
+    redis.hgetall('cards', function(err, res) {
+      if (err !== null) {
+        throw err;
+      }
+
+      done(self);
     });
   };
 };
