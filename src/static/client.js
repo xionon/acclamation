@@ -45,7 +45,7 @@
     };
 
     this.vote = function() {
-      value = $(this).val();
+      var value = $(this).val();
       $.post('/temperature/vote/' + value)
         .success(self.done)
         .error(self.error);
@@ -84,7 +84,7 @@
     };
 
     this.renderAll = function(data) {
-      $.each(data.cards, function(card) {
+      $.each(data.cards, function(id, card) {
         self.appendCard(card);
       });
     };
@@ -93,7 +93,7 @@
       var $card = $('<div/>');
       $card.addClass('card')
         .addClass('card-' + card.topic)
-        .text(card.title)
+        .html(self.htmlForCard(card))
         .hide();
 
       $cardWall.append($card);
@@ -103,6 +103,22 @@
     this.error = function(err) {
       console.error(err);
       alert('An error occurred.  Refer to the console for more information');
+    };
+
+    this.htmlForCard = function(card) {
+      var iconMap = {
+        'happy': 'fa-smile-o',
+        'sad': 'fa-frown-o',
+        'idea': 'fa-lightbulb-o',
+        'shoutout': 'fa-bullhorn'
+      };
+
+      return [
+        '<i class="fa fa-2x ',
+        iconMap[card.topic],
+        '"></i>',
+        card.title
+      ].join('');
     };
   };
 

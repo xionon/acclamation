@@ -43,10 +43,12 @@ module.exports = function(options) {
     var object = JSON.parse(json);
 
     for (var key in object) {
-      if (object.hasOwnProperty(key) && this.hasOwnProperty(key)) {
-        this[key] = object[key];
+      if (object.hasOwnProperty(key) && self.hasOwnProperty(key)) {
+        self[key] = object[key];
       }
     }
+
+    return self;
   };
 
   this.toPlainObject = function() {

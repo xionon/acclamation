@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Session = require('../models/session');
 var Temperature = require('../models/temperature');
+var CardRepository = require('../models/card_repository');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -18,6 +19,20 @@ router.get('/moderator', function(req, res) {
       res.redirect('/session/new');
     } else {
       res.render('moderator');
+    }
+  });
+});
+
+router.get('/client/:sessionId', function(req, res) {
+  'use strict';
+
+  (new Session()).load(function(session) {
+    if (session.id() === null) {
+      res.redirect('/session/new');
+    } else if (session.id() !== req.params.sessionId) {
+      res.redirect('/session/new');
+    } else {
+      res.render('client');
     }
   });
 });
@@ -79,6 +94,22 @@ router.post('/temperature/vote/:value', function(req, res) {
   });
 
   res.send(202);
+});
+
+router.get('/cards', function(req, res) {
+  'use strict';
+
+  (new CardRepository()).all(function(cards) {
+    for (var key in cards) {
+      if (cards.hasOwnProperty(key)) {
+        console.log(key);
+        console.log(cards[key]);
+        cards[key] = cards[key].toPlainObject();
+      }
+    }
+
+    res.json({cards: cards});
+  });
 });
 
 module.exports = router;

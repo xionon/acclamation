@@ -2,10 +2,11 @@
 <html>
   <head>
     <title>Acclamation</title>
-    <link rel="stylesheet" type="text/css" href="/static/pure.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/acclamation.css"/>
-    <script type="text/javascript" src="/static/acclamation.js"></script>
-    <script type="text/javascript" src="/_js/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pure.css"/>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/acclamation.css"/>
+    <script type="text/javascript" src="/javascripts/acclamation.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       window.acclamation = {
         client: (new Acclamation.Client)
@@ -45,18 +46,6 @@
       </div>
     </section>
     <section id="cardwall" class="hidden">
-      <div class="card card-happy">
-        Something good!
-      </div>
-      <div class="card card-sad">
-        Something not so good...
-      </div>
-      <div class="card card-idea">
-        Lightbulb!
-      </div>
-      <div class="card card-shoutout">
-        Mad props!
-      </div>
     </section>
     <footer class="hidden">
       <button id="add_card_btn" class="pure-button pure-button-primary">+ New Card</button>
