@@ -24,6 +24,10 @@
 
 /* Client application */
 
+#cardwall {
+  margin-top: 3.5em;
+}
+
 .card {
   border: solid 1px;
   border-radius: 8px;
@@ -55,6 +59,34 @@
 .card.card-shoutout {
   background-color: #E1F4FF;
   border-color: #409FD2;
+}
+
+#addcard button {
+  display: block;
+  height: 3em;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+#cardform {
+  background: #e6e6e6;
+  border-radius: 12px;
+  margin: 12px;
+  padding: 12px;
+}
+
+#cardform button.pure-input-1 {
+  display: block;
+  text-align: left;
+  width: 100%;
+}
+
+#cardform button .fa {
+  text-align: center;
+  vertial-align: middle;
+  width: 1em;
 }
 
 /* Utility */

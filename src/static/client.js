@@ -6,6 +6,8 @@
 
     this.temperature = new Temperature(this);
     this.cardWall = new CardWall(this);
+    this.addCard = new AddCard(this);
+    this.cardForm = new CardForm(this);
 
     this.initialize = function() {
       $(function() {
@@ -22,6 +24,11 @@
       $('#loader').hide();
       self.temperature.off();
       self.cardWall.on();
+      self.addCard.on();
+    };
+
+    this.showCardForm = function() {
+      self.cardForm.on();
     };
 
     this.initialize();
@@ -119,6 +126,39 @@
         '"></i>',
         card.title
       ].join('');
+    };
+  };
+
+  var AddCard = function(client) {
+    var self = this;
+    var $addCard;
+
+    $(function() {
+      $addCard = $('#addcard');
+      $addCard.delegate('button', 'click', client.showCardForm);
+    });
+
+    this.on = function() {
+      $addCard.show();
+    };
+
+    this.off = function() {
+    };
+  };
+
+  var CardForm = function(client) {
+    var self = this;
+    var $cardForm;
+
+    $(function() {
+      $cardForm = $('#cardform');
+    });
+
+    this.on = function() {
+      $cardForm.removeClass('hidden').fadeIn('fast');
+    };
+
+    this.off = function() {
     };
   };
 

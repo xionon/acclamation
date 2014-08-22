@@ -45,10 +45,36 @@
         </div>
       </div>
     </section>
+    <section id="addcard" class="hidden">
+      <button id="add_card_btn" class="pure-button pure-button-primary">+ New Card</button>
+    </section>
+    <form id="cardform" class="hidden" style="margin-top: 3.5em;">
+      <div class="btn-group">
+        <button id="card_topic_happy" class="pure-button pure-input-1" value="happy">
+          <i class="fa fa-2x fa-smile-o"></i>
+          Something Good
+        </button>
+        <button id="card_topic_sad" class="pure-button pure-input-1" value="sad">
+          <i class="fa fa-2x fa-frown-o"></i>
+          Something Bad
+        </button>
+        <button id="card_topic_idea" class="pure-button pure-input-1" value="idea">
+          <i class="fa fa-2x fa-lightbulb-o"></i>
+          An Idea
+        </button>
+        <button id="card_topic_shoutout" class="pure-button pure-input-1" value="shoutout">
+          <i class="fa fa-2x fa-bullhorn"></i>
+          A Shoutout
+        </button>
+      </div>
+      <div>
+        <button class="pure-button small" class="cancel">
+          <i class="fa fa-times-circle"></i>
+          Close
+        </button>
+      </div>
+    </form>
     <section id="cardwall" class="hidden">
     </section>
-    <footer class="hidden">
-      <button id="add_card_btn" class="pure-button pure-button-primary">+ New Card</button>
-    </footer>
   </body>
 </html>
