@@ -8,7 +8,7 @@ var CardRepository = require('../models/card_repository');
 router.get('/', function(req, res) {
   'use strict';
 
-  res.render('index', { title: 'Express' });
+  res.redirect('/session/new');
 });
 
 router.get('/moderator', function(req, res) {

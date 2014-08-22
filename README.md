@@ -14,6 +14,10 @@ Installation
 
     npm install
 
+You can also pre-populate Redis with data using:
+
+    grunt db:do_over
+
 Usage
 -----
 
@@ -27,3 +31,5 @@ A Procfile is provided for development:
     foreman start
 
 This runs the application inside of `supervisor`, watching for changes to any non-vendored ".js" files.  It also runs `grunt assets:watch` to recompile JavaScript and CSS assets when they change.
+
+Point your server to `http://localhost:8000` and retrospect!
