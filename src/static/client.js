@@ -105,7 +105,7 @@
 
     this.socketConnect = function() {
       var socket = io.connect();
-      socket.on('card', self.appendCard);
+      socket.on('card.created', self.appendCard);
     };
 
     this.appendCard = function(card) {

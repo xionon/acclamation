@@ -117,12 +117,27 @@ router.post('/cards', function(req, res) {
   var card = new Card(req.param('card'));
   if (card.isValid()) {
     card.save(function(card) {
-      req.io.broadcast('card', card.toPlainObject());
+      req.io.broadcast('card.created', card.toPlainObject());
     });
     res.send(202);
   } else {
     res.send(422);
   }
+});
+
+router.post('/cards/:cardId/fold', function(req, res) {
+  'use strict';
+
+  var card = new Card();
+  card.load(req.params.cardId, function(card) {
+    card.type = 'child-card';
+    card.parent = req.param('parent');
+    card.save(function(card) {
+      req.io.broadcast('card.folded', card.toPlainObject());
+    });
+  });
+
+  res.send(202);
 });
 
 module.exports = router;

@@ -12,6 +12,7 @@ module.exports = function(options) {
   this.type = options.type || 'card';
   this.topic = options.topic;
   this.title = options.title;
+  this.parent = options.parent;
   this.votes = 0;
 
   this.load = function(id, done) {
@@ -67,6 +68,7 @@ module.exports = function(options) {
       type: this.type,
       topic: this.topic,
       title: this.title,
+      parent: this.parent,
       votes: this.votes
     };
   };

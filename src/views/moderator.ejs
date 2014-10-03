@@ -3,6 +3,7 @@
   <head>
     <title>Acclamation Moderator</title>
     <link rel="stylesheet" type="text/css" href="/stylesheets/pure.css"/>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="/stylesheets/acclamation.css"/>
     <style type="text/css">
       #left-column section {
@@ -23,13 +24,14 @@
         window.acclamation = {
           heightAdapter: (new Acclamation.HeightAdapter()),
           clock: (new Acclamation.Clock("#clock")),
-          temperature: (new Acclamation.Temperature("#temperature"))
+          temperature: (new Acclamation.Temperature("#temperature")),
+          cardWall: (new Acclamation.CardWall())
         };
       });
     </script>
   </head>
   <body>
-    <div class="pure-g">
+    <div id="moderator" class="pure-g">
       <div id="left-column" class="pure-u-1-5">
         <section id="qr-code">
           <img src="/session/qr_code" alt="QR code to join the retro"/>
@@ -39,8 +41,29 @@
         </section>
         <section id ="clock"></section>
       </div>
-      <div id="content" class="pure-u-4-5">
-        <section id="cards"></section>
+      <div class="card-column pure-u-1-5">
+        <header class="card-header">
+          <i class="fa fa-2x fa-smile-o"></i>
+        </header>
+        <section id="cards-happy"></section>
+      </div>
+      <div class="card-column pure-u-1-5">
+        <header class="card-header">
+          <i class="fa fa-2x fa-frown-o"></i>
+        </header>
+        <section id="cards-sad"></section>
+      </div>
+      <div class="card-column pure-u-1-5">
+        <header class="card-header">
+          <i class="fa fa-2x fa-lightbulb-o"></i>
+        </header>
+        <section id="cards-idea"></section>
+      </div>
+      <div class="card-column pure-u-1-5">
+        <header class="card-header">
+          <i class="fa fa-2x fa-bullhorn"></i>
+        </header>
+        <section id="cards-shoutout"></section>
       </div>
     </div>
   </body>

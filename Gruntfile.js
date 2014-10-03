@@ -16,6 +16,11 @@ module.exports = function(grunt) {
       'javascript': {
         src: [
           'bower_components/jquery/dist/jquery.min.js',
+          'bower_components/jquery.ui/ui/core.js',
+          'bower_components/jquery.ui/ui/widget.js',
+          'bower_components/jquery.ui/ui/mouse.js',
+          'bower_components/jquery.ui/ui/draggable.js',
+          'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/chartjs/Chart.min.js',
           'tmp/_minified_javascript/**/*.js'
         ],
@@ -24,6 +29,11 @@ module.exports = function(grunt) {
       'javascript_dev': {
         src: [
           'bower_components/jquery/dist/jquery.min.js',
+          'bower_components/jquery.ui/ui/core.js',
+          'bower_components/jquery.ui/ui/widget.js',
+          'bower_components/jquery.ui/ui/mouse.js',
+          'bower_components/jquery.ui/ui/draggable.js',
+          'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/chartjs/Chart.min.js',
           'src/static/**/*.js'
         ],
