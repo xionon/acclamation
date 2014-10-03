@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Session = require('../models/session');
 var Temperature = require('../models/temperature');
+var Card= require('../models/card');
 var CardRepository = require('../models/card_repository');
 
 /* GET home page. */
@@ -102,14 +103,26 @@ router.get('/cards', function(req, res) {
   (new CardRepository()).all(function(cards) {
     for (var key in cards) {
       if (cards.hasOwnProperty(key)) {
-        console.log(key);
-        console.log(cards[key]);
         cards[key] = cards[key].toPlainObject();
       }
     }
 
     res.json({cards: cards});
   });
+});
+
+router.post('/cards', function(req, res) {
+  'use strict';
+
+  var card = new Card(req.param('card'));
+  if (card.isValid()) {
+    card.save(function(card) {
+      req.io.broadcast('card', card.toPlainObject());
+    });
+    res.send(202);
+  } else {
+    res.send(422);
+  }
 });
 
 module.exports = router;

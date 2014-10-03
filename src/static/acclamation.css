@@ -89,6 +89,14 @@
   width: 1em;
 }
 
+#cardform textarea {
+  box-sizing: border-box;
+  height: 128px;
+  margin: 4px 0;
+  padding: 8px;
+  width: 100%;
+}
+
 /* Utility */
 
 .centered {

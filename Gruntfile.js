@@ -204,8 +204,6 @@ module.exports = function(grunt) {
       args.push(sendCommand);
       fn = args.shift();
 
-      console.log(fn); console.log(args);
-
       redis[fn].apply(redis, args);
     };
 

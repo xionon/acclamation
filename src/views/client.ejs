@@ -48,8 +48,8 @@
     <section id="addcard" class="hidden">
       <button id="add_card_btn" class="pure-button pure-button-primary">+ New Card</button>
     </section>
-    <form id="cardform" class="hidden" style="margin-top: 3.5em;">
-      <div class="btn-group">
+    <form id="cardform" class="hidden">
+      <div class="btn-group" id="cardtopics">
         <button id="card_topic_happy" class="pure-button pure-input-1" value="happy">
           <i class="fa fa-2x fa-smile-o"></i>
           Something Good
@@ -68,7 +68,14 @@
         </button>
       </div>
       <div>
-        <button class="pure-button small" class="cancel">
+        <textarea id="card_title" placeholder="Go on..."></textarea>
+      </div>
+      <div>
+        <button type="submit" class="pure-button small save">
+          <i class="fa fa-check-circle"></i>
+          Save
+        </button>
+        <button class="pure-button small cancel">
           <i class="fa fa-times-circle"></i>
           Close
         </button>

@@ -25,6 +25,16 @@ module.exports = function(options) {
     });
   };
 
+  this.isValid = function() {
+    if (this.topic === undefined || this.topic === '') {
+      return false;
+    }
+    if (this.title === undefined || this.title === '') {
+      return false;
+    }
+    return true;
+  };
+
   this.save = function(done) {
     if (this.id === null) {
       this.id = uuid.v4();

@@ -25,10 +25,17 @@
       self.temperature.off();
       self.cardWall.on();
       self.addCard.on();
+      self.cardForm.off();
     };
 
     this.showCardForm = function() {
+      self.addCard.off();
       self.cardForm.on();
+    };
+
+    this.hideCardForm = function() {
+      self.addCard.on();
+      self.cardForm.off();
     };
 
     this.initialize();
@@ -78,14 +85,14 @@
 
     this.on = function() {
       $cardWall.show();
-      this.loadAll();
+      this.loadAll().then(this.socketConnect);
     };
 
     this.off = function() {
     };
 
     this.loadAll = function() {
-      $.get('/cards')
+      return $.get('/cards')
         .success(self.renderAll)
         .error(self.error);
     };
@@ -94,6 +101,11 @@
       $.each(data.cards, function(id, card) {
         self.appendCard(card);
       });
+    };
+
+    this.socketConnect = function() {
+      var socket = io.connect();
+      socket.on('card', self.appendCard);
     };
 
     this.appendCard = function(card) {
@@ -140,9 +152,13 @@
 
     this.on = function() {
       $addCard.show();
+      $addCard.find('button').slideDown('fast');
+      $('#cardwall').animate({marginTop: '3.5em'}, 'fast');
     };
 
     this.off = function() {
+      $addCard.find('button').slideUp('fast');
+      $('#cardwall').css({marginTop: 'inherit'});
     };
   };
 
@@ -152,13 +168,69 @@
 
     $(function() {
       $cardForm = $('#cardform');
+      $cardForm.delegate('#cardtopics button', 'click', self.chooseTopic);
+      $cardForm.delegate('#cardtopics button.selected', 'click', self.cancelTopic);
+      $cardForm.delegate('button.cancel', 'click', function(e) {
+        e.preventDefault();
+        client.hideCardForm();
+      });
+      $cardForm.delegate('button.save', 'click', self.persistCard);
     });
 
     this.on = function() {
-      $cardForm.removeClass('hidden').fadeIn('fast');
+      $cardForm.slideDown('fast');
     };
 
     this.off = function() {
+      $cardForm.slideUp('fast', function() {
+        self.cancelTopic();
+        $cardForm.find('textarea').val('');
+      });
+    };
+
+    this.chooseTopic = function(e) {
+      $cardForm
+        .find('#cardtopics button')
+        .not(e.currentTarget)
+        .stop(true, true)
+        .slideUp('fast')
+        .fadeOut('fast');
+      $(e.currentTarget).addClass('selected');
+      e.preventDefault();
+    };
+
+    this.cancelTopic = function() {
+      $cardForm
+        .find('#cardtopics button')
+        .removeClass('selected')
+        .stop(true, true)
+        .slideDown('fast')
+        .fadeIn('fast');
+    };
+
+    this.persistCard = function(e) {
+      var card = {
+        topic: $cardForm.find('#cardtopics button.selected').val(),
+        title: $cardForm.find('textarea').val()
+      };
+
+      if (card.topic === '' || card.title === '') {
+        return false;
+      }
+
+      $.post('/cards', {card: card})
+        .success(self.done)
+        .error(self.error);
+      e.preventDefault();
+    };
+
+    this.done = function() {
+      client.hideCardForm();
+    };
+
+    this.error = function(err) {
+      console.error(err);
+      alert('An error occurred.  Refer to the console for more information');
     };
   };
 
