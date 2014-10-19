@@ -12,6 +12,7 @@
     this.socketConnect = function() {
       var socket = io.connect();
       socket.on('card.created', self.appendCard);
+      socket.on('card.updated', self.updateCard);
       socket.on('card.folded', self.foldCard);
     };
 
@@ -41,7 +42,7 @@
         .data('card-votes', card.votes)
         .html(card.title)
         .hide()
-        .draggable({containment: '#moderator', cursor: 'move', stack: '.card'})
+        .draggable({containment: '#moderator', cursor: 'move', revert: 'invalid', stack: '.card'})
         .droppable({accept: '.card', hoverClass: 'drop-hover', drop: self.handleCardDrop});
 
       $column.prepend($card);
@@ -64,7 +65,7 @@
 
     this.setupEvents = function() {
       $('.card-column').delegate('.card', 'dblclick', self.editCard);
-      $('.card-column').delegate('input', 'blur', self.updateCard);
+      $('.card-column').delegate('textarea', 'blur', self.handleCardEdit);
     };
 
     this.editCard = function(e) {
@@ -75,18 +76,24 @@
         return;
       }
 
-      $input = $('<input/>')
-        .attr('type', 'text')
-        .val($card.html());
+      $input = $('<textarea/>')
+        .append($card.html())
+        .height($card.height());
       $card.html('').append($input);
+      $input.focus();
     };
 
-    this.updateCard = function(e) {
+    this.handleCardEdit = function(e) {
       var $input = $(e.target);
       var $card = $input.closest('.card');
+      var title = $input.val();
 
-      $input.remove();
-      $card.html($input.val());
+      $.post('/cards/' + $card.data('card-id'), {title: title}).then($input.remove);
+    };
+
+    this.updateCard = function(card) {
+      var $card = $('#card-' + card.id);
+      $card.html(card.title);
     };
 
     this.initialize();

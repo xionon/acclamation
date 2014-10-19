@@ -8,10 +8,17 @@
     this.cardWall = new CardWall(this);
     this.addCard = new AddCard(this);
     this.cardForm = new CardForm(this);
+    this.sessionId = window.location.pathname.match(/\/client\/([A-Z0-9\-]+)/i)[1];
 
     this.initialize = function() {
+      var next = self.showTemperature;
+
+      if (self.temperature.hasVoted()) {
+        next = self.showCardWall;
+      }
+
       $(function() {
-        setTimeout(self.showTemperature, 500);
+        setTimeout(next, 500);
       });
     };
 
@@ -66,12 +73,21 @@
     };
 
     this.done = function() {
+      self.recordVote();
       client.showCardWall();
     };
 
     this.error = function(err) {
       console.error(err);
       alert('An error occurred.  Refer to the console for more information');
+    };
+
+    this.recordVote = function() {
+      localStorage.setItem('acclamation.temperature.lastVotingSessionId', client.sessionId);
+    };
+
+    this.hasVoted = function() {
+      return localStorage.getItem('acclamation.temperature.lastVotingSessionId') == client.sessionId;
     };
   };
 
@@ -106,17 +122,39 @@
     this.socketConnect = function() {
       var socket = io.connect();
       socket.on('card.created', self.appendCard);
+      socket.on('card.updated', self.updateCard);
+      socket.on('card.folded', self.foldCard);
     };
 
     this.appendCard = function(card) {
       var $card = $('<div/>');
+
+      if (card.parent) {
+        return;
+      }
+
       $card.addClass('card')
+        .attr('id', 'card-' + card.id)
         .addClass('card-' + card.topic)
         .html(self.htmlForCard(card))
         .hide();
 
       $cardWall.append($card);
       $card.fadeIn('fast');
+    };
+
+    this.updateCard = function(card) {
+      var $card = $('#card-' + card.id);
+      $card.html(self.htmlForCard(card));
+    };
+
+    this.foldCard = function(card) {
+      var $parent = $('#card-' + card.parent);
+      var $card = $('#card-' + card.id);
+
+      $card.slideUp('fast', function() {
+        $card.remove();
+      });
     };
 
     this.error = function(err) {
@@ -165,9 +203,12 @@
   var CardForm = function(client) {
     var self = this;
     var $cardForm;
+    var $textarea;
 
     $(function() {
       $cardForm = $('#cardform');
+      $textarea = $cardForm.find('textarea');
+
       $cardForm.delegate('#cardtopics button', 'click', self.chooseTopic);
       $cardForm.delegate('#cardtopics button.selected', 'click', self.cancelTopic);
       $cardForm.delegate('button.cancel', 'click', function(e) {
@@ -195,6 +236,8 @@
         .stop(true, true)
         .slideUp('fast')
         .fadeOut('fast');
+      $textarea
+        .slideDown('fast');
       $(e.currentTarget).addClass('selected');
       e.preventDefault();
     };
@@ -206,12 +249,14 @@
         .stop(true, true)
         .slideDown('fast')
         .fadeIn('fast');
+      $textarea
+        .slideUp('fast');
     };
 
     this.persistCard = function(e) {
       var card = {
         topic: $cardForm.find('#cardtopics button.selected').val(),
-        title: $cardForm.find('textarea').val()
+        title: $cardForm.find('textarea').val().trim()
       };
 
       if (card.topic === '' || card.title === '') {

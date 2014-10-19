@@ -25,12 +25,19 @@
           heightAdapter: (new Acclamation.HeightAdapter()),
           clock: (new Acclamation.Clock("#clock")),
           temperature: (new Acclamation.Temperature("#temperature")),
-          cardWall: (new Acclamation.CardWall())
+          cardWall: (new Acclamation.CardWall()),
+          menu: (new Acclamation.Menu())
         };
       });
     </script>
   </head>
   <body>
+    <menu class="pure-menu pure-menu-open pure-menu-horizontal">
+      <ul>
+        <li><a href="#">Open Voting</a></li>
+        <li><a href="#">End Session</a></li>
+      </ul>
+    </menu>
     <div id="moderator" class="pure-g">
       <div id="left-column" class="pure-u-1-5">
         <section id="qr-code">

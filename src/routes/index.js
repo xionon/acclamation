@@ -125,6 +125,20 @@ router.post('/cards', function(req, res) {
   }
 });
 
+router.post('/cards/:cardId', function(req, res) {
+  'use strict';
+
+  var card = new Card();
+  card.load(req.params.cardId, function(card) {
+    card.title = req.param('title');
+    card.save(function(card) {
+      req.io.broadcast('card.updated', card.toPlainObject());
+    });
+  });
+
+  res.send(202);
+});
+
 router.post('/cards/:cardId/fold', function(req, res) {
   'use strict';
 
