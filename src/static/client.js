@@ -237,7 +237,8 @@
         .slideUp('fast')
         .fadeOut('fast');
       $textarea
-        .slideDown('fast');
+        .slideDown('fast')
+        .focus();
       $(e.currentTarget).addClass('selected');
       e.preventDefault();
     };

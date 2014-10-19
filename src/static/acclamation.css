@@ -99,10 +99,22 @@
 
 /* Moderator application */
 
+#moderator {
+  margin-bottom: 64px;
+}
+
 menu {
   font-size: 0.7em;
   margin-top: 0;
   position: fixed;
+}
+
+#left-column {
+  position: fixed;
+}
+
+.card-column:nth-child(2) {
+  margin-left: 20%;
 }
 
 .card-column .card {
