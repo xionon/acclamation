@@ -131,6 +131,17 @@ menu {
   width: 100%;
 }
 
+.card .vote-count {
+  float: right;
+  background: gray;
+  padding: 0.2em 0.4em;
+  border-radius: 1em;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin: -0.9em -1.2em 0 0.3em;
+  color: white;
+}
+
 header.card-header {
   text-align: center;
 }

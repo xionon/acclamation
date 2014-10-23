@@ -32,11 +32,13 @@
     </script>
   </head>
   <body>
-    <menu class="pure-menu pure-menu-open pure-menu-horizontal">
+    <menu class="pure-menu pure-menu-open pure-menu-horizontal hidden">
       <ul>
-        <li><a href="#">Close to New Cards</a></li>
-        <li><a href="#">Open Voting</a></li>
-        <li><a href="#">End Session</a></li>
+        <li><a href="#" class="session-state" rel="allowNewCards" data-state="false">Close to New Cards</a></li>
+        <li><a href="#" class="session-state" rel="allowNewCards" data-state="true">Open to New Cards</a></li>
+        <li><a href="#" class="session-state" rel="allowVoting" data-state="false">Close Voting</a></li>
+        <li><a href="#" class="session-state" rel="allowVoting" data-state="true">Open Voting</a></li>
+        <li><a href="#" class="end-session">End Session</a></li>
       </ul>
     </menu>
     <div id="moderator" class="pure-g">

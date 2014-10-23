@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Session = require('../models/session');
+var SessionState = require('../models/sessionState');
 var Temperature = require('../models/temperature');
 var Card= require('../models/card');
 var CardRepository = require('../models/card_repository');
@@ -75,6 +76,24 @@ router.get('/session/qr_code', function(req, res) {
       });
     }
   });
+});
+
+router.get('/session/state', function(req, res) {
+  (new SessionState()).load(function(state) {
+    res.json(state.toPlainObject());
+  });
+});
+
+router.post('/session/state', function(req, res) {
+  (new SessionState()).load(function(state) {
+    state.allowNewCards = req.param('allowNewCards', state.allowNewCards);
+    state.allowVoting = req.param('allowVoting', state.allowVoting);
+    state.save(function(state) {
+      req.io.broadcast('sessionState', state.toPlainObject());
+    });
+  });
+
+  res.send(202);
 });
 
 router.get('/temperature', function(req, res) {

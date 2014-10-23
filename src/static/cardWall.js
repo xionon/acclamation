@@ -39,8 +39,7 @@
         .attr('id', 'card-' + card.id)
         .data('card-id', card.id)
         .data('card-topic', card.topic)
-        .data('card-votes', card.votes)
-        .html(card.title)
+        .html(self.htmlForCard(card))
         .hide()
         .draggable({containment: '#moderator', cursor: 'move', revert: 'invalid', stack: '.card'})
         .droppable({accept: '.card', hoverClass: 'drop-hover', drop: self.handleCardDrop});
@@ -72,7 +71,7 @@
       var $card = $(e.target);
       var $input;
 
-      if ($card.find('input').length > 0) {
+      if ($card.find('textarea').length > 0) {
         return;
       }
 
@@ -93,7 +92,11 @@
 
     this.updateCard = function(card) {
       var $card = $('#card-' + card.id);
-      $card.html(card.title);
+      $card.html(self.htmlForCard(card));
+    };
+
+    this.htmlForCard = function(card) {
+      return '<div class="vote-count">' + card.votes + '</div>' + card.title;
     };
 
     this.initialize();
