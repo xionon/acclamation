@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "postinstall": "bower install",
+    "prestart": "grunt assets:install",
     "start": "node ./bin/www",
     "stop": "killall node || true",
     "test": "echo \"Error: no test specified\" && exit 1"
