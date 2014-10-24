@@ -89,7 +89,7 @@ router.post('/session/state', function(req, res) {
     state.allowNewCards = req.param('allowNewCards', state.allowNewCards);
     state.allowVoting = req.param('allowVoting', state.allowVoting);
     state.save(function(state) {
-      req.io.broadcast('sessionState', state.toPlainObject());
+      req.io.broadcast('sessionState.changed', state.toPlainObject());
     });
   });
 

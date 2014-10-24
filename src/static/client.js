@@ -8,6 +8,8 @@
     this.cardWall = new CardWall(this);
     this.addCard = new AddCard(this);
     this.cardForm = new CardForm(this);
+    this.voting = new Voting(this);
+    this.sessionManager = new SessionManager(this);
     this.sessionId = window.location.pathname.match(/\/client\/([A-Z0-9\-]+)/i)[1];
 
     this.initialize = function() {
@@ -18,6 +20,7 @@
       }
 
       $(function() {
+        self.sessionManager.on();
         setTimeout(next, 500);
       });
     };
@@ -31,8 +34,15 @@
       $('#loader').hide();
       self.temperature.off();
       self.cardWall.on();
-      self.addCard.on();
-      self.cardForm.off();
+
+      if (self.sessionManager.allowVoting && !self.sessionManager.allowNewCards) {
+        self.voting.on();
+        self.addCard.off();
+        self.cardForm.off();
+      } else {
+        self.addCard.on();
+        self.voting.off();
+      }
     };
 
     this.showCardForm = function() {
@@ -97,11 +107,11 @@
 
     $(function() {
       $cardWall = $('#cardwall');
+      self.loadAll().then(this.socketConnect);
     });
 
     this.on = function() {
       $cardWall.show();
-      this.loadAll().then(this.socketConnect);
     };
 
     this.off = function() {
@@ -135,6 +145,7 @@
 
       $card.addClass('card')
         .attr('id', 'card-' + card.id)
+        .data('card-id', card.id)
         .addClass('card-' + card.topic)
         .html(self.htmlForCard(card))
         .hide();
@@ -174,7 +185,8 @@
         '<i class="fa fa-2x ',
         iconMap[card.topic],
         '"></i>',
-        card.title
+        card.title,
+        '<span class="vote-badge"/>'
       ].join('');
     };
   };
@@ -191,12 +203,26 @@
     this.on = function() {
       $addCard.show();
       $addCard.find('button').slideDown('fast');
-      $('#cardwall').animate({marginTop: '3.5em'}, 'fast');
     };
 
     this.off = function() {
       $addCard.find('button').slideUp('fast');
-      $('#cardwall').css({marginTop: 'inherit'});
+    };
+
+    this.sessionStateChanged = function(state) {
+      if (state.allowNewCards) {
+        $addCard
+          .find('button')
+          .attr('disabled', false)
+          .removeClass('pure-button-disabled')
+          .text('+ New Card');
+      } else {
+        $addCard
+          .find('button')
+          .attr('disabled', true)
+          .addClass('pure-button-disabled')
+          .text('Closed to New Cards');
+      }
     };
   };
 
@@ -277,6 +303,132 @@
     this.error = function(err) {
       console.error(err);
       alert('An error occurred.  Refer to the console for more information');
+    };
+  };
+
+  var Voting = function(client) {
+    var self = this;
+    var $voteHeader;
+    var $voteStatus;
+    var MAX_VOTES = 3;
+    var voteMap = {};
+
+    this.clickTimer = null;
+
+    $(function() {
+      $voteHeader = $('#voteheader');
+      $voteStatus = $('#votestatus');
+    });
+
+    this.on = function() {
+      self.updateStatus();
+      $voteHeader.slideDown('fast');
+      self.bindEvents();
+    };
+
+    this.off = function() {
+      $voteHeader.slideUp('fast');
+      self.unbindEvents();
+    };
+
+    this.bindEvents = function() {
+      self.unbindEvents();
+      $('#cardwall').delegate('.card', 'tap', self.vote);
+      $('#cardwall').delegate('.card', 'doubletap', self.unvote);
+    };
+
+    this.unbindEvents = function() {
+      $('#cardwall').undelegate('.card', 'tap');
+      $('#cardwall').undelegate('.card', 'doubletap');
+    };
+
+    this.vote = function(e) {
+      var $card = $(this);
+
+      self.clickTimer = setTimeout(function() {
+        if (self.clickTimer === null) {
+          return;
+        }
+
+        console.log('Received vote for', $card);
+        if (self.votesCast() >= MAX_VOTES) {
+          alert('You have already used all ' + MAX_VOTES + ' of your votes');
+          return;
+        }
+
+        self.updateVoteMap($card, 1);
+      }, 250);
+    };
+
+    this.unvote = function(e) {
+      var $card = $(this);
+      clearTimeout(self.clickTimer);
+      self.clickTimer = null;
+      console.log('Received unvote for', $card);
+      self.updateVoteMap($card, -1);
+    };
+
+    this.updateVoteMap = function($card, value) {
+      var cardId = $card.data('card-id');
+
+      voteMap[cardId] = voteMap[cardId] || 0;
+      voteMap[cardId] += value;
+
+      if (voteMap[cardId] < 0) {
+        voteMap[cardId] = 0;
+      }
+
+      if (voteMap[cardId] > 0) {
+        $card.find('.vote-badge').text('+' + voteMap[cardId]);
+      } else {
+        $card.find('.vote-badge').text('');
+      }
+
+      self.updateStatus();
+    };
+
+    this.updateStatus = function() {
+      $voteStatus.text((MAX_VOTES - self.votesCast()) + ' votes left');
+    };
+
+    this.votesCast = function() {
+      var votesCast = 0;
+      $.each(voteMap, function(cardId, votes) {
+        votesCast += votes;
+      });
+      return votesCast;
+    };
+
+    this.sessionStateChanged = function(state) {
+      client.showCardWall();
+    };
+  };
+
+  var SessionManager = function(client) {
+    var self = this;
+
+    this.allowNewCards = false;
+    this.allowVoting = false;
+
+    this.on = function() {
+      self.load().then(this.socketConnect);
+    };
+
+    this.load = function() {
+      return $.get('/session/state').then(self.sessionStateChanged);
+    };
+
+    this.socketConnect = function() {
+      var socket = io.connect();
+      socket.on('sessionState.changed', self.sessionStateChanged);
+    };
+
+    this.sessionStateChanged = function(state) {
+      self.allowNewCards = state.allowNewCards;
+      self.allowVoting = state.allowVoting;
+
+      client.addCard.sessionStateChanged(state);
+      client.voting.sessionStateChanged(state);
     };
   };
 

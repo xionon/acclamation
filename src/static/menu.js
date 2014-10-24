@@ -24,7 +24,7 @@
 
     this.socketConnect = function() {
       var socket = io.connect();
-      socket.on('sessionState', self.setState);
+      socket.on('sessionState.changed', self.setState);
     };
 
     this.setState = function(state) {

@@ -21,6 +21,7 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/mouse.js',
           'bower_components/jquery.ui/ui/draggable.js',
           'bower_components/jquery.ui/ui/droppable.js',
+          'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/chartjs/Chart.min.js',
           'tmp/_minified_javascript/**/*.js'
         ],
@@ -34,6 +35,7 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/mouse.js',
           'bower_components/jquery.ui/ui/draggable.js',
           'bower_components/jquery.ui/ui/droppable.js',
+          'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/chartjs/Chart.min.js',
           'src/static/**/*.js'
         ],
