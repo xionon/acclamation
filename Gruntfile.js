@@ -23,6 +23,7 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/chartjs/Chart.min.js',
+          'bower_components/tinysort/dist/jquery.tinysort.js',
           'tmp/_minified_javascript/**/*.js'
         ],
         dest: 'public/javascripts/<%= pkg.name %>.js'
@@ -37,6 +38,7 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/chartjs/Chart.min.js',
+          'bower_components/tinysort/dist/jquery.tinysort.js',
           'src/static/**/*.js'
         ],
         dest: 'public/javascripts/<%= pkg.name %>.js'

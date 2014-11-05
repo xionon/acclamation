@@ -356,16 +356,27 @@
           return;
         }
 
-        self.updateVoteMap($card, 1);
+        self.saveVote($card, 1);
       }, 250);
     };
 
     this.unvote = function(e) {
       var $card = $(this);
+      var cardId = $card.data('card-id');
       clearTimeout(self.clickTimer);
       self.clickTimer = null;
-      console.log('Received unvote for', $card);
-      self.updateVoteMap($card, -1);
+
+      if (voteMap[cardId] === undefined || voteMap[cardId] > 0) {
+        console.log('Received unvote for', $card);
+        self.saveVote($card, -1);
+      }
+    };
+
+    this.saveVote = function($card, value) {
+      var cardId = $card.data('card-id');
+      $.post('/cards/' + cardId + '/vote', {value: value}).success(function() {
+        self.updateVoteMap($card, value);
+      });;
     };
 
     this.updateVoteMap = function($card, value) {
@@ -373,10 +384,6 @@
 
       voteMap[cardId] = voteMap[cardId] || 0;
       voteMap[cardId] += value;
-
-      if (voteMap[cardId] < 0) {
-        voteMap[cardId] = 0;
-      }
 
       if (voteMap[cardId] > 0) {
         $card.find('.vote-badge').text('+' + voteMap[cardId]);

@@ -1,11 +1,12 @@
 'use strict';
 
+var async = require('async');
 var Card = require('./card');
 var redis = require('../redis_client');
 
 module.exports = function() {
   var self = this;
-  var cards = {};
+  var cards = [];
 
   this.all = function(done) {
     redis.hgetall('cards', function(err, res) {
@@ -15,11 +16,15 @@ module.exports = function() {
 
       for (var key in res) {
         if (res.hasOwnProperty(key)) {
-          cards[key] = (new Card()).fromJson(res[key]);
+          cards.push((new Card()).fromJson(res[key]));
         }
       }
 
-      done(cards, self);
+      async.map(cards, function(card, callback) {
+        card.loadVotes(callback);
+      }, function() {
+        done(cards, self);
+      });
     });
   };
 };

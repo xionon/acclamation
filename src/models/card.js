@@ -1,5 +1,6 @@
 'use strict';
 
+var CardVote = require('./cardVote');
 var redis = require('../redis_client');
 var uuid = require('uuid');
 
@@ -22,7 +23,9 @@ module.exports = function(options) {
       }
 
       self.fromJson(res);
-      done(self);
+      self.loadVotes(function() {
+        done(self);
+      });
     });
   };
 
@@ -75,5 +78,14 @@ module.exports = function(options) {
 
   this.toJson = function() {
     return JSON.stringify(this.toPlainObject());
+  };
+
+  this.loadVotes = function(done) {
+    (new CardVote()).load(this.id, function(cardVotes) {
+      self.votes = cardVotes.votes;
+      if (typeof done === 'function') {
+        done();
+      }
+    });
   };
 };

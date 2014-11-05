@@ -3,7 +3,8 @@ var router = express.Router();
 var Session = require('../models/session');
 var SessionState = require('../models/sessionState');
 var Temperature = require('../models/temperature');
-var Card= require('../models/card');
+var Card = require('../models/card');
+var CardVote = require('../models/cardVote');
 var CardRepository = require('../models/card_repository');
 
 /* GET home page. */
@@ -120,13 +121,13 @@ router.get('/cards', function(req, res) {
   'use strict';
 
   (new CardRepository()).all(function(cards) {
-    for (var key in cards) {
-      if (cards.hasOwnProperty(key)) {
-        cards[key] = cards[key].toPlainObject();
-      }
+    var serializedCards = {};
+
+    for (var i = 0; i < cards.length; i++) {
+      serializedCards[cards[i].id] = cards[i].toPlainObject();
     }
 
-    res.json({cards: cards});
+    res.json({cards: serializedCards});
   });
 });
 
@@ -167,6 +168,22 @@ router.post('/cards/:cardId/fold', function(req, res) {
     card.parent = req.param('parent');
     card.save(function(card) {
       req.io.broadcast('card.folded', card.toPlainObject());
+    });
+  });
+
+  res.send(202);
+});
+
+router.post('/cards/:cardId/vote', function(req, res) {
+  'use strict';
+
+  var cardVote = new CardVote();
+  var value = Number(req.param('value'));
+
+  cardVote.increment(req.params.cardId, value, function(card) {
+    var card = new Card();
+    card.load(req.params.cardId, function(card) {
+      req.io.broadcast('card.vote', card.toPlainObject());
     });
   });
 

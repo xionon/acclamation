@@ -4,6 +4,8 @@
   var CardWall = function() {
     var self = this;
 
+    this.voting = false;
+
     this.initialize = function() {
       self.load().then(self.renderAll).then(self.socketConnect);
       $(self.setupEvents);
@@ -14,9 +16,12 @@
       socket.on('card.created', self.appendCard);
       socket.on('card.updated', self.updateCard);
       socket.on('card.folded', self.foldCard);
+      socket.on('card.vote', self.updateCard);
+      socket.on('sessionState.changed', self.setState);
     };
 
     this.load = function() {
+      $.get('/session/state').then(self.setState);
       return $.get('/cards');
     };
 
@@ -24,6 +29,7 @@
       $.each(data.cards, function(id, card) {
         self.appendCard(card);
       });
+      self.sortCards();
     };
 
     this.appendCard = function(card) {
@@ -93,11 +99,24 @@
     this.updateCard = function(card) {
       var $card = $('#card-' + card.id);
       $card.html(self.htmlForCard(card));
+      self.sortCards();
+    };
+
+    this.sortCards = function(section) {
+      if (self.voting) {
+        $('.card').tsort('.vote-count', {order: 'desc'});
+      }
     };
 
     this.htmlForCard = function(card) {
       return '<div class="vote-count">' + card.votes + '</div>' + card.title;
     };
+
+    this.setState = function(state) {
+      self.voting = state.allowVoting;
+      self.sortCards();
+    };
+
 
     this.initialize();
   };
