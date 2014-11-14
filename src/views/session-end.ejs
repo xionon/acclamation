@@ -1,0 +1,38 @@
+<!DOCTYPE html >
+<html>
+  <head>
+    <title>Finish Acclamation Session</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pure.css"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/acclamation.css"/>
+    <script type="text/javascript" src="/javascripts/acclamation.js"></script>
+  </head>
+  <body class="message">
+    <div class="pure-g">
+      <div class="pure-u-md-1-5"></div>
+      <div id="prompt" class="pure-u-1 pure-u-md-3-5 message-box">
+        <h1>Finish Acclamation Session</h1>
+        <p>
+          You are about to end the current Acclamation session.  This will destroy all data related
+          to the session.  You can download a JSON summary of the session for posterity.
+        </p>
+        <p>
+          <a href="/moderator" class="pure-button">Back to Session</a>
+          <a href="/session/export" class="pure-button">Session Summary</a>
+          <a href="/session/destroy" class="pure-button pure-button-primary end-session">End Session</a>
+        </p>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(function() {
+        $('.end-session').click(function(e) {
+          if (!confirm("Are you sure you want to end the current session?  All data will be destroyed!")) {
+            e.preventDefault();
+            return false;
+          }
+          return true;
+        });
+      });
+    </script>
+  </body>
+</html>

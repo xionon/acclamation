@@ -1,6 +1,8 @@
 var express = require('express');
+var redis = require('../redis_client');
 var router = express.Router();
 var Session = require('../models/session');
+var SessionExport  = require('../models/sessionExport');
 var SessionState = require('../models/sessionState');
 var Temperature = require('../models/temperature');
 var Card = require('../models/card');
@@ -76,6 +78,31 @@ router.get('/session/qr_code', function(req, res) {
         res.end();
       });
     }
+  });
+});
+
+router.get('/session/export', function(req, res) {
+  'use strict';
+  (new SessionExport(function(exportData) {
+    var today = new Date();
+    var filename = 'acclamation_session_' +
+      today.getFullYear() + '-' +
+      (today.getMonth() < 9 ? '0' : '') + (today.getMonth() + 1) + '-' +
+      (today.getDate() < 10 ? '0' : '') + today.getDate() + '.json';
+
+    res.attachment(filename);
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(exportData), 'utf8');
+  }));
+});
+
+router.get('/session/end', function(req, res) {
+  res.render('session-end');
+});
+
+router.get('/session/destroy', function(req, res) {
+  redis.flushdb(function() {
+    res.redirect('/session/new');
   });
 });
 
