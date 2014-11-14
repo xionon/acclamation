@@ -39,6 +39,6 @@ module.exports = function() {
   };
 
   this.qr = function() {
-    return qr.image(config.server.baseUrl + '/client/' + this.id(), { type: 'png' });
+    return qr.image(config.server.baseUrl + '/client/' + this.id(), { type: 'png', size: 8 });
   };
 };

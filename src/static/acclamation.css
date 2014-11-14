@@ -144,6 +144,25 @@
 
 /* Moderator application */
 
+#left-column section {
+  text-align: center;
+}
+
+#left-column section#clock {
+  font-size: 5em;
+  font-weight: bold;
+  padding: 0.2em 0;
+}
+
+#qr-code img {
+  width: 100%;
+}
+
+#temperature, #temperature-section {
+  width: 288px;
+  height: 288px;
+}
+
 #moderator {
   margin-bottom: 64px;
 }

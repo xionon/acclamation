@@ -7,13 +7,12 @@
   };
 
   HeightAdapter.prototype.adapt = function() {
-    var height = $(window).height();
+    var QR_CODE_HEIGHT = 292;
+    var PADDING = 64;
+    var chartHeight = $(window).height() - QR_CODE_HEIGHT - $('#clock').outerHeight() - PADDING;
 
-    ['#qr-code', '#temperature-section'].map(function(div) {
-      $(div).css('height', Math.floor(height / 3));
-    });
-
-    $('#temperature').attr('height', Math.floor(height / 3));
+    $('#temperature-section').css('height', chartHeight);
+    $('#temperature').attr('height', chartHeight);
   };
 
   window.Acclamation = window.Acclamation || {};

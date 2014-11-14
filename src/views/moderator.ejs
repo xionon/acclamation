@@ -5,25 +5,13 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/pure.css"/>
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" type="text/css" href="/stylesheets/acclamation.css"/>
-    <style type="text/css">
-      #left-column section {
-        text-align: center;
-      }
-      #left-column section#vote-results {
-      }
-      #left-column section#clock {
-        font-size: 5em;
-        font-weight: bold;
-        padding: 0.5em 0;
-      }
-    </style>
     <script type="text/javascript" src="/javascripts/acclamation.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       $(function() {
         window.acclamation = {
-          heightAdapter: (new Acclamation.HeightAdapter()),
           clock: (new Acclamation.Clock("#clock")),
+          heightAdapter: (new Acclamation.HeightAdapter()),
           temperature: (new Acclamation.Temperature("#temperature")),
           cardWall: (new Acclamation.CardWall()),
           menu: (new Acclamation.Menu())
@@ -43,13 +31,13 @@
     </menu>
     <div id="moderator" class="pure-g">
       <div id="left-column" class="pure-u-1-5">
+        <section id ="clock">&nbsp;</section>
         <section id="qr-code">
           <img src="/session/qr_code" alt="QR code to join the retro"/>
         </section>
         <section id="temperature-section">
           <canvas id="temperature"></canvas>
         </section>
-        <section id ="clock"></section>
       </div>
       <div class="card-column pure-u-1-5">
         <header class="card-header">
