@@ -194,7 +194,7 @@
         iconMap[card.topic],
         '"></i>',
         card.title,
-        '<span class="vote-badge"/>'
+        '<span class="vote-badge">', client.voting.signedVotesForCard(card.id), '</span>',
       ].join('');
     };
   };
@@ -319,7 +319,6 @@
     var $voteHeader;
     var $voteStatus;
     var MAX_VOTES = 3;
-    var voteMap = {};
 
     this.clickTimer = null;
 
@@ -370,11 +369,11 @@
 
     this.unvote = function(e) {
       var $card = $(this);
-      var cardId = $card.data('card-id');
+      var votesForCard = self.votesForCard($card.data('card-id'));
       clearTimeout(self.clickTimer);
       self.clickTimer = null;
 
-      if (voteMap[cardId] === undefined || voteMap[cardId] > 0) {
+      if (votesForCard > 0) {
         console.log('Received unvote for', $card);
         self.saveVote($card, -1);
       }
@@ -389,15 +388,14 @@
 
     this.updateVoteMap = function($card, value) {
       var cardId = $card.data('card-id');
+      var voteMap = self.getVoteMap();
 
       voteMap[cardId] = voteMap[cardId] || 0;
-      voteMap[cardId] += value;
+      voteMap[cardId] = self.votesForCard(cardId) + value;
 
-      if (voteMap[cardId] > 0) {
-        $card.find('.vote-badge').text('+' + voteMap[cardId]);
-      } else {
-        $card.find('.vote-badge').text('');
-      }
+      self.saveVoteMap(voteMap);
+
+      $card.find('.vote-badge').text(self.signedVotesForCard(cardId));
 
       self.updateStatus();
     };
@@ -407,11 +405,40 @@
     };
 
     this.votesCast = function() {
+      var voteMap = self.getVoteMap();
       var votesCast = 0;
       $.each(voteMap, function(cardId, votes) {
         votesCast += votes;
       });
       return votesCast;
+    };
+
+    this.getVoteMap = function() {
+      var jsonMap = localStorage.getItem('acclamation.voting.voteMap');
+      if (jsonMap) {
+        try { return JSON.parse(jsonMap); } catch (_) {}
+      }
+      return {};
+    };
+
+    this.saveVoteMap = function(voteMap) {
+      return localStorage.setItem('acclamation.voting.voteMap', JSON.stringify(voteMap));
+    };
+
+    this.votesForCard = function(cardId) {
+      var voteMap = self.getVoteMap();
+      return (voteMap[cardId] || 0);
+    };
+
+    this.signedVotesForCard = function(cardId) {
+      var votes = self.votesForCard(cardId);
+      if (votes > 0) {
+        return ['+', votes].join('');
+      } else if (votes < 0) {
+        return votes;
+      } else {
+        return '';
+      }
     };
 
     this.sessionStateChanged = function(state) {
