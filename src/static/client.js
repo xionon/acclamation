@@ -16,11 +16,10 @@
       var next = self.showTemperature;
 
       if (self.temperature.hasVoted()) {
-        next = self.showCardWall;
+        next = self.initSession;
       }
 
       $(function() {
-        self.sessionManager.on();
         setTimeout(next, 500);
       });
     };
@@ -28,6 +27,14 @@
     this.showTemperature = function() {
       $('#loader').hide();
       self.temperature.on();
+      self.addCard.off();
+      self.cardWall.off();
+      self.cardForm.off();
+      self.voting.off();
+    };
+
+    this.initSession = function() {
+      self.sessionManager.on();
     };
 
     this.showCardWall = function() {
@@ -84,7 +91,7 @@
 
     this.done = function() {
       self.recordVote();
-      client.showCardWall();
+      client.initSession();
     };
 
     this.error = function(err) {
@@ -115,6 +122,7 @@
     };
 
     this.off = function() {
+      $cardWall.hide();
     };
 
     this.loadAll = function() {
@@ -202,11 +210,11 @@
 
     this.on = function() {
       $addCard.show();
-      $addCard.find('button').slideDown('fast');
+      $addCard.slideDown('fast');
     };
 
     this.off = function() {
-      $addCard.find('button').slideUp('fast');
+      $addCard.slideUp('fast');
     };
 
     this.sessionStateChanged = function(state) {

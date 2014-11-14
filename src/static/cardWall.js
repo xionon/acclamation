@@ -109,14 +109,22 @@
     };
 
     this.htmlForCard = function(card) {
-      return '<div class="vote-count">' + card.votes + '</div>' + card.title;
+      return '<div class="vote-count' + (self.voting ? '' : ' hidden') + '">' + card.votes + '</div>' + card.title;
+    };
+
+    this.setVoting = function(allowVoting) {
+      self.voting = allowVoting;
+      if (allowVoting) {
+        $('.vote-count').show();
+      } else {
+        $('.vote-count').hide();
+      }
     };
 
     this.setState = function(state) {
-      self.voting = state.allowVoting;
+      self.setVoting(state.allowVoting);
       self.sortCards();
     };
-
 
     this.initialize();
   };

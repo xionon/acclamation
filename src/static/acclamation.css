@@ -66,7 +66,22 @@
   margin-left: 0.3em;
 }
 
+#addcard {
+  background: #FFF;
+  height: 3em;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
 #addcard button {
+  display: block;
+  height: 3em;
+  width: 100%;
+}
+
+#addcard button.pure-button-disabled {
   display: block;
   height: 3em;
   left: 0;
@@ -162,14 +177,15 @@ menu {
 }
 
 .card .vote-count {
-  float: right;
-  background: gray;
-  padding: 0.2em 0.4em;
+  background: #FFF;
+  border: solid 1px #C0C0C0;
   border-radius: 1em;
+  color: #666;
+  float: right;
   font-size: 0.8em;
   font-weight: bold;
-  margin: -0.9em -1.2em 0 0.3em;
-  color: white;
+  margin: -0.2em -1.2em 0 0.3em;
+  padding: 0.2em 0.4em;
 }
 
 header.card-header {
