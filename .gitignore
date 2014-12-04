@@ -1,9 +1,7 @@
 .grunt
 .ruby-version
 bower_components
-dist
 dump.rdb
 node_modules
 public
-src.old
 tmp
