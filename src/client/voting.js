@@ -100,15 +100,17 @@ var Voting = function(client) {
   };
 
   this.getVoteMap = function() {
-    var jsonMap = localStorage.getItem('acclamation.voting.voteMap');
-    if (jsonMap) {
-      try { return JSON.parse(jsonMap); } catch (_) {}
+    var votingSession = localStorage.getItem('acclamation.voting.sessionId');
+    var voteMap = localStorage.getItem('acclamation.voting.voteMap');
+    if (votingSession === client.sessionId && voteMap) {
+      try { return JSON.parse(voteMap); } catch (_) {}
     }
     return {};
   };
 
   this.saveVoteMap = function(voteMap) {
-    return localStorage.setItem('acclamation.voting.voteMap', JSON.stringify(voteMap));
+    localStorage.setItem('acclamation.voting.sessionId', client.sessionId);
+    localStorage.setItem('acclamation.voting.voteMap', JSON.stringify(voteMap));
   };
 
   this.votesForCard = function(cardId) {
