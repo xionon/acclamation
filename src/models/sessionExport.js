@@ -2,7 +2,6 @@
 
 var async = require('async');
 var CardRepository = require('./card_repository');
-var redis = require('../redis_client');
 var Temperature = require('./temperature');
 
 module.exports = function(done) {

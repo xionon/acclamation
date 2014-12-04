@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var redis = require('../redis_client');
 var router = express.Router();
@@ -9,16 +11,11 @@ var Card = require('../models/card');
 var CardVote = require('../models/cardVote');
 var CardRepository = require('../models/card_repository');
 
-/* GET home page. */
 router.get('/', function(req, res) {
-  'use strict';
-
   res.redirect('/session/new');
 });
 
 router.get('/moderator', function(req, res) {
-  'use strict';
-
   (new Session()).load(function(session) {
     if (session.id() === null) {
       res.redirect('/session/new');
@@ -29,8 +26,6 @@ router.get('/moderator', function(req, res) {
 });
 
 router.get('/client/:sessionId', function(req, res) {
-  'use strict';
-
   (new Session()).load(function(session) {
     if (session.id() === null) {
       res.redirect('/session/new');
@@ -43,8 +38,6 @@ router.get('/client/:sessionId', function(req, res) {
 });
 
 router.get('/session/new', function(req, res) {
-  'use strict';
-
   (new Session()).load(function(session) {
     if (session.id() === null) {
       res.render('session-start');
@@ -55,16 +48,12 @@ router.get('/session/new', function(req, res) {
 });
 
 router.get('/session/start', function(req, res) {
-  'use strict';
-
   (new Session()).create(function(session) {
     res.redirect('/moderator');
   });
 });
 
 router.get('/session/qr_code', function(req, res) {
-  'use strict';
-
   (new Session()).load(function(session) {
     if (session.id() === null) {
       res.send(404);
@@ -82,7 +71,6 @@ router.get('/session/qr_code', function(req, res) {
 });
 
 router.get('/session/export', function(req, res) {
-  'use strict';
   (new SessionExport(function(exportData) {
     var today = new Date();
     var filename = 'acclamation_session_' +
@@ -125,16 +113,12 @@ router.post('/session/state', function(req, res) {
 });
 
 router.get('/temperature', function(req, res) {
-  'use strict';
-
   (new Temperature()).load(function(temperature) {
     res.json(temperature.getValues());
   });
 });
 
 router.post('/temperature/vote/:value', function(req, res) {
-  'use strict';
-
   (new Temperature()).increment(req.params.value, function(temperature) {
     temperature.load(function(temperature) {
       req.io.broadcast('temperature', temperature.getValues());
@@ -145,8 +129,6 @@ router.post('/temperature/vote/:value', function(req, res) {
 });
 
 router.get('/cards', function(req, res) {
-  'use strict';
-
   (new CardRepository()).all(function(cards) {
     var serializedCards = {};
 
@@ -159,8 +141,6 @@ router.get('/cards', function(req, res) {
 });
 
 router.post('/cards', function(req, res) {
-  'use strict';
-
   var card = new Card(req.param('card'));
   if (card.isValid()) {
     card.save(function(card) {
@@ -173,8 +153,6 @@ router.post('/cards', function(req, res) {
 });
 
 router.post('/cards/:cardId', function(req, res) {
-  'use strict';
-
   var card = new Card();
   card.load(req.params.cardId, function(card) {
     card.title = req.param('title');
@@ -187,8 +165,6 @@ router.post('/cards/:cardId', function(req, res) {
 });
 
 router.post('/cards/:cardId/fold', function(req, res) {
-  'use strict';
-
   var card = new Card();
   card.load(req.params.cardId, function(card) {
     card.type = 'child-card';
@@ -202,12 +178,10 @@ router.post('/cards/:cardId/fold', function(req, res) {
 });
 
 router.post('/cards/:cardId/vote', function(req, res) {
-  'use strict';
-
   var cardVote = new CardVote();
   var value = Number(req.param('value'));
 
-  cardVote.increment(req.params.cardId, value, function(card) {
+  cardVote.increment(req.params.cardId, value, function() {
     var card = new Card();
     card.load(req.params.cardId, function(card) {
       req.io.broadcast('card.vote', card.toPlainObject());
