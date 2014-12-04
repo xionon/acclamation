@@ -8,14 +8,24 @@ Requirements
 
 * Node.js >= v0.10
 * NPM
+* Redis
 
 Installation
 ------------
 
     npm install
+    bower install
 
-Usage
------
+Starting the Server
+-------------------
+
+Compile static assets:
+
+    # minified version
+    grunt assets:install
+
+    # or non-minified version
+    grunt assets:install_dev
 
 Run the server:
 

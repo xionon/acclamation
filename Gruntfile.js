@@ -102,11 +102,11 @@ module.exports = function(grunt) {
 
     watch: {
       'javascript': {
-        files: ['src/client/*.js'],
+        files: ['src/client/*.js', 'src/moderator/*.js'],
         tasks: ['assets:javascript:install']
       },
       'javascript_dev': {
-        files: ['src/client/*.js'],
+        files: ['src/client/*.js', 'src/moderator/*.js'],
         tasks: ['assets:javascript:install_dev']
       },
       'stylesheets': {
