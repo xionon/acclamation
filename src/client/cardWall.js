@@ -7,7 +7,7 @@ var CardWall = function(client) {
 
   $(function() {
     $cardWall = $('#cardwall');
-    self.loadAll().then(this.socketConnect);
+    self.loadAll().then(self.socketConnect);
   });
 
   this.on = function() {

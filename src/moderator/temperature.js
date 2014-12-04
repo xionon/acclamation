@@ -8,7 +8,7 @@ var Temperature = function(container) {
   this.chart = null;
 
   this.initialize = function() {
-    this.load().then(self.render).then(self.socketConnect);
+    self.load().then(self.render).then(self.socketConnect);
   };
 
   this.socketConnect = function() {

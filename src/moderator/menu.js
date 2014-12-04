@@ -14,7 +14,7 @@ var Menu = function() {
       .then(self.socketConnect)
       .then(self.adapt);
 
-    $(window).resize(this.adapt);
+    $(window).resize(self.adapt);
     $menu.delegate('a.session-state', 'click', self.handleStateChange);
   };
 

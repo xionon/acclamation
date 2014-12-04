@@ -8,7 +8,7 @@ var SessionManager = function(client) {
   this.allowVoting = false;
 
   this.on = function() {
-    self.load().then(this.socketConnect);
+    self.load().then(self.socketConnect);
   };
 
   this.load = function() {
