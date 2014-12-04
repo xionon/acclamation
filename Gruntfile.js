@@ -1,37 +1,36 @@
 /* jshint camelcase: false */
 'use strict';
 
-var faker = require('faker');
-var uuid = require('uuid');
-
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     browserify: {
-      'tmp/javascript/client.js': ['src/client/**/*.js']
+      'tmp/javascript/client.js': ['src/client/**/*.js'],
+      'tmp/javascript/moderator.js': ['src/moderator/**/*.js']
     },
 
     concat: {
       options: {
         separator: ';\n'
       },
-      'javascript': {
+      'client': {
         src: [
           'bower_components/jquery/dist/jquery.min.js',
-          'bower_components/jquery.ui/ui/core.js',
-          'bower_components/jquery.ui/ui/widget.js',
-          'bower_components/jquery.ui/ui/mouse.js',
-          'bower_components/jquery.ui/ui/draggable.js',
-          'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/jquery.finger/dist/jquery.finger.js',
-          'bower_components/chartjs/Chart.min.js',
-          'bower_components/tinysort/dist/jquery.tinysort.js',
           'tmp/javascript/client.min.js'
         ],
-        dest: 'public/javascripts/<%= pkg.name %>.js'
+        dest: 'public/javascripts/client.js'
       },
-      'javascript_dev': {
+      'client_dev': {
+        src: [
+          'bower_components/jquery/dist/jquery.min.js',
+          'bower_components/jquery.finger/dist/jquery.finger.js',
+          'tmp/javascript/client.js'
+        ],
+        dest: 'public/javascripts/client.js'
+      },
+      'moderator': {
         src: [
           'bower_components/jquery/dist/jquery.min.js',
           'bower_components/jquery.ui/ui/core.js',
@@ -39,12 +38,25 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/mouse.js',
           'bower_components/jquery.ui/ui/draggable.js',
           'bower_components/jquery.ui/ui/droppable.js',
-          'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
-          'tmp/javascript/client.js'
+          'tmp/javascript/moderator.min.js'
         ],
-        dest: 'public/javascripts/<%= pkg.name %>.js'
+        dest: 'public/javascripts/moderator.js'
+      },
+      'moderator_dev': {
+        src: [
+          'bower_components/jquery/dist/jquery.min.js',
+          'bower_components/jquery.ui/ui/core.js',
+          'bower_components/jquery.ui/ui/widget.js',
+          'bower_components/jquery.ui/ui/mouse.js',
+          'bower_components/jquery.ui/ui/draggable.js',
+          'bower_components/jquery.ui/ui/droppable.js',
+          'bower_components/chartjs/Chart.min.js',
+          'bower_components/tinysort/dist/jquery.tinysort.js',
+          'tmp/javascript/moderator.js'
+        ],
+        dest: 'public/javascripts/moderator.js'
       },
       'stylesheets': {
         src: [
@@ -75,12 +87,8 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      'javascript': {
-        files: [{
-          src: 'tmp/javascript/client.js',
-          dest: 'tmp/javascript/client.min.js'
-        }]
-      }
+      'tmp/javascript/client.min.js': ['tmp/javascript/client.js'],
+      'tmp/javascript/moderator.min.js': ['tmp/javascript/moderator.js']
     },
 
     cssmin: {
@@ -149,8 +157,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jasmine-node');
   grunt.loadNpmTasks('grunt-shell-spawn');
 
-  grunt.registerTask('assets:javascript:install', ['browserify', 'uglify:javascript', 'concat:javascript']);
-  grunt.registerTask('assets:javascript:install_dev', ['browserify', 'concat:javascript_dev']);
+  grunt.registerTask('assets:javascript:install', ['browserify', 'uglify', 'concat:client', 'concat:moderator']);
+  grunt.registerTask('assets:javascript:install_dev', ['browserify', 'concat:client_dev', 'concat:moderator_dev']);
 
   grunt.registerTask('assets:stylesheets:install', ['cssmin:minify', 'concat:stylesheets', 'concat:pure']);
   grunt.registerTask('assets:stylesheets:install_dev', ['concat:stylesheets_dev', 'concat:pure_dev']);
@@ -172,7 +180,9 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('db:populate', function() {
+    var faker = require('faker');
     var redis = require('./src/redis_client');
+    var uuid = require('uuid');
     var done = this.async();
     var commands = [];
     var sendCommand, i, tempval, id, topic, title;
