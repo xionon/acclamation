@@ -2,12 +2,15 @@
 'use strict';
 
 var faker = require('faker');
-var redis = require('./src/redis_client');
 var uuid = require('uuid');
 
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    browserify: {
+      'tmp/javascript/client.js': ['src/client/**/*.js']
+    },
 
     concat: {
       options: {
@@ -24,7 +27,7 @@ module.exports = function(grunt) {
           'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
-          'tmp/_minified_javascript/**/*.js'
+          'tmp/javascript/client.min.js'
         ],
         dest: 'public/javascripts/<%= pkg.name %>.js'
       },
@@ -39,7 +42,7 @@ module.exports = function(grunt) {
           'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
-          'src/static/**/*.js'
+          'tmp/javascript/client.js'
         ],
         dest: 'public/javascripts/<%= pkg.name %>.js'
       },
@@ -72,14 +75,10 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      options: {
-        banner: '/*! Compiled at <%= grunt.template.today(\'yyyy-mm-dd HH:MM:ss\') %> */\n',
-      },
       'javascript': {
         files: [{
-          expand: true,
-          src: 'src/static/**/*.js',
-          dest: 'tmp/_minified_javascript'
+          src: 'tmp/javascript/client.js',
+          dest: 'tmp/javascript/client.min.js'
         }]
       }
     },
@@ -95,11 +94,11 @@ module.exports = function(grunt) {
 
     watch: {
       'javascript': {
-        files: ['src/static/**/*.js'],
+        files: ['src/client/*.js'],
         tasks: ['assets:javascript:install']
       },
       'javascript_dev': {
-        files: ['src/static/**/*.js'],
+        files: ['src/client/*.js'],
         tasks: ['assets:javascript:install_dev']
       },
       'stylesheets': {
@@ -141,6 +140,7 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -149,8 +149,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jasmine-node');
   grunt.loadNpmTasks('grunt-shell-spawn');
 
-  grunt.registerTask('assets:javascript:install', ['uglify:javascript', 'concat:javascript']);
-  grunt.registerTask('assets:javascript:install_dev', ['concat:javascript_dev']);
+  grunt.registerTask('assets:javascript:install', ['browserify', 'uglify:javascript', 'concat:javascript']);
+  grunt.registerTask('assets:javascript:install_dev', ['browserify', 'concat:javascript_dev']);
 
   grunt.registerTask('assets:stylesheets:install', ['cssmin:minify', 'concat:stylesheets', 'concat:pure']);
   grunt.registerTask('assets:stylesheets:install_dev', ['concat:stylesheets_dev', 'concat:pure_dev']);
@@ -166,11 +166,13 @@ module.exports = function(grunt) {
   grunt.registerTask('check', ['spec', 'jshint']);
 
   grunt.registerTask('db:flush', function() {
+    var redis = require('./src/redis_client');
     var done = this.async();
     redis.flushdb(done);
   });
 
   grunt.registerTask('db:populate', function() {
+    var redis = require('./src/redis_client');
     var done = this.async();
     var commands = [];
     var sendCommand, i, tempval, id, topic, title;

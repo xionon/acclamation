@@ -1,5 +1,7 @@
 {
   // Environment
+  "browser": true,
+  "jquery": true,
   "node": true,
 
   // Enforcing options
