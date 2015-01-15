@@ -25,6 +25,8 @@
     "jquery.finger": "https://github.com/matthewpatterson/jquery.finger.git#master",
     "jquery.ui": "1.11.1",
     "pure": "0.5.0",
-    "tinysort": "*"
+    "tinysort": "*",
+    "jquery-textcomplete": "~0.3.6",
+    "emoji-parser": "~0.1.1"
   }
 }
