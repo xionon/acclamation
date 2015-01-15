@@ -22,7 +22,7 @@ module.exports = function(grunt) {
           'bower_components/jquery-textcomplete/dist/jquery.textcomplete.js',
           'bower_components/emoji-parser/main.js',
           'tmp/javascript/client.min.js',
-          'tmp/javascript/emoji.min.js'
+          'tmp/javascript/emoji.js'
         ],
         dest: 'public/javascripts/client.js'
       },
@@ -48,8 +48,7 @@ module.exports = function(grunt) {
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
           'bower_components/emoji-parser/main.js',
-          'tmp/javascript/moderator.min.js',
-          'tmp/javascript/emoji.min.js'
+          'tmp/javascript/moderator.min.js'
         ],
         dest: 'public/javascripts/moderator.js'
       },
@@ -64,8 +63,7 @@ module.exports = function(grunt) {
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
           'bower_components/emoji-parser/main.js',
-          'tmp/javascript/moderator.js',
-          'tmp/javascript/emoji.js'
+          'tmp/javascript/moderator.js'
         ],
         dest: 'public/javascripts/moderator.js'
       },
