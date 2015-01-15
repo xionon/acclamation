@@ -108,7 +108,7 @@ var CardWall = function() {
   };
 
   this.htmlForCard = function(card) {
-    return '<div class="vote-count' + (self.voting ? '' : ' hidden') + '">' + card.votes + '</div>' + card.title;
+    return '<div class="vote-count' + (self.voting ? '' : ' hidden') + '">' + card.votes + '</div>' + window.emojiParser(card.title, '/images/emoji');
   };
 
   this.setVoting = function(allowVoting) {

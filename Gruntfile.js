@@ -20,6 +20,7 @@ module.exports = function(grunt) {
           'bower_components/jquery/dist/jquery.min.js',
           'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/jquery-textcomplete/dist/jquery.textcomplete.js',
+          'bower_components/emoji-parser/main.js',
           'tmp/javascript/client.min.js',
           'tmp/javascript/emoji.min.js'
         ],
@@ -30,6 +31,7 @@ module.exports = function(grunt) {
           'bower_components/jquery/dist/jquery.min.js',
           'bower_components/jquery.finger/dist/jquery.finger.js',
           'bower_components/jquery-textcomplete/dist/jquery.textcomplete.js',
+          'bower_components/emoji-parser/main.js',
           'tmp/javascript/client.js',
           'tmp/javascript/emoji.js'
         ],
@@ -45,6 +47,7 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
+          'bower_components/emoji-parser/main.js',
           'tmp/javascript/moderator.min.js',
           'tmp/javascript/emoji.min.js'
         ],
@@ -60,6 +63,7 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
+          'bower_components/emoji-parser/main.js',
           'tmp/javascript/moderator.js',
           'tmp/javascript/emoji.js'
         ],
