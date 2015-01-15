@@ -7,7 +7,8 @@ module.exports = function(grunt) {
 
     browserify: {
       'tmp/javascript/client.js': ['src/client/**/*.js'],
-      'tmp/javascript/moderator.js': ['src/moderator/**/*.js']
+      'tmp/javascript/moderator.js': ['src/moderator/**/*.js'],
+      'tmp/javascript/emoji.js': ['src/static/emoji.js']
     },
 
     concat: {
@@ -18,7 +19,10 @@ module.exports = function(grunt) {
         src: [
           'bower_components/jquery/dist/jquery.min.js',
           'bower_components/jquery.finger/dist/jquery.finger.js',
-          'tmp/javascript/client.min.js'
+          'bower_components/jquery-textcomplete/dist/jquery.textcomplete.js',
+          'bower_components/emoji-parser/main.js',
+          'tmp/javascript/client.min.js',
+          'tmp/javascript/emoji.min.js'
         ],
         dest: 'public/javascripts/client.js'
       },
@@ -26,7 +30,10 @@ module.exports = function(grunt) {
         src: [
           'bower_components/jquery/dist/jquery.min.js',
           'bower_components/jquery.finger/dist/jquery.finger.js',
-          'tmp/javascript/client.js'
+          'bower_components/jquery-textcomplete/dist/jquery.textcomplete.js',
+          'bower_components/emoji-parser/main.js',
+          'tmp/javascript/client.js',
+          'tmp/javascript/emoji.js'
         ],
         dest: 'public/javascripts/client.js'
       },
@@ -40,7 +47,9 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
-          'tmp/javascript/moderator.min.js'
+          'bower_components/emoji-parser/main.js',
+          'tmp/javascript/moderator.min.js',
+          'tmp/javascript/emoji.min.js'
         ],
         dest: 'public/javascripts/moderator.js'
       },
@@ -54,19 +63,23 @@ module.exports = function(grunt) {
           'bower_components/jquery.ui/ui/droppable.js',
           'bower_components/chartjs/Chart.min.js',
           'bower_components/tinysort/dist/jquery.tinysort.js',
-          'tmp/javascript/moderator.js'
+          'bower_components/emoji-parser/main.js',
+          'tmp/javascript/moderator.js',
+          'tmp/javascript/emoji.js'
         ],
         dest: 'public/javascripts/moderator.js'
       },
       'stylesheets': {
         src: [
-          'tmp/_minified_stylesheets/**/*.css'
+          'tmp/_minified_stylesheets/**/*.css',
+          'bower_components/jquery-textcomplete/dist/jquery.textcomplete.css'
         ],
         dest: 'public/stylesheets/<%= pkg.name %>.css'
       },
       'stylesheets_dev': {
         src: [
-          'src/static/**/*.css'
+          'src/static/**/*.css',
+          'bower_components/jquery-textcomplete/dist/jquery.textcomplete.css'
         ],
         dest: 'public/stylesheets/<%= pkg.name %>.css'
       },
@@ -144,6 +157,13 @@ module.exports = function(grunt) {
       },
       stop_redis: {
         command: 'pgrep redis-server | xargs kill'
+      },
+
+      emojify: {
+        command: 'rsync -az bower_components/emoji-parser/emoji public/images && echo "var base_emojis = [" > public/javascripts/base_emoji.js && ls -1 public/images/emoji | grep ".png" | sed -e \'s/\\..*$//\' | xargs -I{} echo \\\"{}\\\" | tr \"\\n\" "," | sed "s/,$//" >> public/javascripts/base_emoji.js && echo "];" >> public/javascripts/base_emoji.js',
+        options: {
+          async: true
+        }
       }
     }
   });
@@ -163,8 +183,8 @@ module.exports = function(grunt) {
   grunt.registerTask('assets:stylesheets:install', ['cssmin:minify', 'concat:stylesheets', 'concat:pure']);
   grunt.registerTask('assets:stylesheets:install_dev', ['concat:stylesheets_dev', 'concat:pure_dev']);
 
-  grunt.registerTask('assets:install', ['assets:javascript:install', 'assets:stylesheets:install']);
-  grunt.registerTask('assets:install_dev', ['assets:javascript:install_dev', 'assets:stylesheets:install_dev']);
+  grunt.registerTask('assets:install', ['assets:javascript:install', 'assets:stylesheets:install', 'shell:emojify']);
+  grunt.registerTask('assets:install_dev', ['assets:javascript:install_dev', 'assets:stylesheets:install_dev', 'shell:emojify']);
 
   grunt.registerTask('redis:start', ['shell:start_redis']);
   grunt.registerTask('redis:stop', ['shell:stop_redis']);

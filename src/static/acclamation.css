@@ -235,3 +235,23 @@ header.card-header {
   padding-top: 90px;
   width: 66px;
 }
+
+.dropdown-menu {
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #FFFFFF;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.emoji {
+  width: 22px;
+  height: 22px;
+}
