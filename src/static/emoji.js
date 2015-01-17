@@ -1,9 +1,11 @@
+'use strict';
+
 $(function() {
   $('.emoji-autocomplete').textcomplete([
     {
       match: /\B:([\-+\w]*)$/,
       search: function (term, callback) {
-        callback($.map(base_emojis, function (emoji) {
+        callback($.map(base_emojis, function (emoji) { // jshint ignore:line
           return emoji.indexOf(term) === 0 ? emoji : null;
         }));
       },
