@@ -2,7 +2,6 @@
 // vi: ft=javascript
 
 var debug = require('debug')('acclamation');
-var cluster = require('cluster');
 var config = require('../src/config');
 var app = require('../src/app');
 
