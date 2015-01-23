@@ -1,4 +1,3 @@
-/* global io:false */
 'use strict';
 
 var CardWall = function(client) {
@@ -7,7 +6,7 @@ var CardWall = function(client) {
 
   $(function() {
     $cardWall = $('#cardwall');
-    self.loadAll().then(self.socketConnect);
+    self.loadAll();
   });
 
   this.on = function() {
@@ -30,15 +29,18 @@ var CardWall = function(client) {
     });
   };
 
-  this.socketConnect = function() {
-    var socket = io.connect();
-    socket.on('card.created', self.appendCard);
-    socket.on('card.updated', self.updateCard);
-    socket.on('card.folded', self.foldCard);
+  this.socketBind = function() {
+    client.socket.on('card.created', self.appendCard);
+    client.socket.on('card.updated', self.updateCard);
+    client.socket.on('card.folded', self.foldCard);
   };
 
   this.appendCard = function(card) {
     var $card = $('<div/>');
+
+    if ($cardWall.find('#card-' + card.id).length > 0) {
+      return;
+    }
 
     if (card.parent) {
       return;

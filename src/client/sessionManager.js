@@ -1,4 +1,3 @@
-/* global io:false */
 'use strict';
 
 var SessionManager = function(client) {
@@ -8,16 +7,15 @@ var SessionManager = function(client) {
   this.allowVoting = false;
 
   this.on = function() {
-    self.load().then(self.socketConnect);
+    self.load();
   };
 
   this.load = function() {
     return $.get('/session/state').then(self.sessionStateChanged);
   };
 
-  this.socketConnect = function() {
-    var socket = io.connect();
-    socket.on('sessionState.changed', self.sessionStateChanged);
+  this.socketBind = function() {
+    client.socket.on('sessionState.changed', self.sessionStateChanged);
   };
 
   this.sessionStateChanged = function(state) {

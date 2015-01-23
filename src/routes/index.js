@@ -3,6 +3,8 @@
 var express = require('express');
 var redis = require('../redisClient');
 var router = express.Router();
+
+var EventPublisher = require('../eventPublisher');
 var Session = require('../models/session');
 var SessionExport  = require('../models/sessionExport');
 var SessionState = require('../models/sessionState');
@@ -10,6 +12,8 @@ var Temperature = require('../models/temperature');
 var Card = require('../models/card');
 var CardVote = require('../models/cardVote');
 var CardRepository = require('../models/card_repository');
+
+var events = new EventPublisher('acclamation.events');
 
 router.get('/', function(req, res) {
   res.redirect('/session/new');
@@ -105,7 +109,7 @@ router.post('/session/state', function(req, res) {
     state.allowNewCards = req.param('allowNewCards', state.allowNewCards);
     state.allowVoting = req.param('allowVoting', state.allowVoting);
     state.save(function(state) {
-      req.io.broadcast('sessionState.changed', state.toPlainObject());
+      events.publish('sessionState.changed', state.toPlainObject());
     });
   });
 
@@ -121,7 +125,7 @@ router.get('/temperature', function(req, res) {
 router.post('/temperature/vote/:value', function(req, res) {
   (new Temperature()).increment(req.params.value, function(temperature) {
     temperature.load(function(temperature) {
-      req.io.broadcast('temperature', temperature.getValues());
+      events.publish('temperature', temperature.getValues());
     });
   });
 
@@ -144,7 +148,7 @@ router.post('/cards', function(req, res) {
   var card = new Card(req.param('card'));
   if (card.isValid()) {
     card.save(function(card) {
-      req.io.broadcast('card.created', card.toPlainObject());
+      events.publish('card.created', card.toPlainObject());
     });
     res.send(202);
   } else {
@@ -157,7 +161,7 @@ router.post('/cards/:cardId', function(req, res) {
   card.load(req.params.cardId, function(card) {
     card.title = req.param('title');
     card.save(function(card) {
-      req.io.broadcast('card.updated', card.toPlainObject());
+      events.publish('card.updated', card.toPlainObject());
     });
   });
 
@@ -170,7 +174,7 @@ router.post('/cards/:cardId/fold', function(req, res) {
     card.type = 'child-card';
     card.parent = req.param('parent');
     card.save(function(card) {
-      req.io.broadcast('card.folded', card.toPlainObject());
+      events.publish('card.folded', card.toPlainObject());
     });
   });
 
@@ -184,7 +188,7 @@ router.post('/cards/:cardId/vote', function(req, res) {
   cardVote.increment(req.params.cardId, value, function() {
     var card = new Card();
     card.load(req.params.cardId, function(card) {
-      req.io.broadcast('card.vote', card.toPlainObject());
+      events.publish('card.vote', card.toPlainObject());
     });
   });
 

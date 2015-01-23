@@ -1,3 +1,4 @@
+/* global io:false */
 'use strict';
 
 var AddCard = require('./addCard');
@@ -10,6 +11,7 @@ var Voting = require('./voting');
 var Client = function() {
   var self = this;
 
+  this.socket = io.connect();
   this.temperature = new Temperature(this);
   this.cardWall = new CardWall(this);
   this.addCard = new AddCard(this);
@@ -24,6 +26,9 @@ var Client = function() {
     if (self.temperature.hasVoted()) {
       next = self.initSession;
     }
+
+    self.cardWall.socketBind();
+    self.sessionManager.socketBind();
 
     $(function() {
       setTimeout(next, 500);
