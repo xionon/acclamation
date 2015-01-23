@@ -2,7 +2,7 @@
 
 var config = require('../config');
 var qr = require('qr-image');
-var redis = require('../redis_client');
+var redis = require('../redisClient');
 var uuid = require('uuid');
 
 module.exports = function() {

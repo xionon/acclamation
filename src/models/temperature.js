@@ -1,6 +1,6 @@
 'use strict';
 
-var redis = require('../redis_client');
+var redis = require('../redisClient');
 
 module.exports = function() {
   var values = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0};

@@ -1,7 +1,7 @@
 'use strict';
 
 var CardVote = require('./cardVote');
-var redis = require('../redis_client');
+var redis = require('../redisClient');
 var uuid = require('uuid');
 
 module.exports = function(options) {

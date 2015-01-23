@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var redis = require('../redis_client');
+var redis = require('../redisClient');
 var router = express.Router();
 var Session = require('../models/session');
 var SessionExport  = require('../models/sessionExport');

@@ -2,7 +2,7 @@
 
 var async = require('async');
 var Card = require('./card');
-var redis = require('../redis_client');
+var redis = require('../redisClient');
 
 module.exports = function() {
   var self = this;

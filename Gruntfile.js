@@ -192,14 +192,14 @@ module.exports = function(grunt) {
   grunt.registerTask('check', ['spec', 'jshint']);
 
   grunt.registerTask('db:flush', function() {
-    var redis = require('./src/redis_client');
+    var redis = require('./src/redisClient');
     var done = this.async();
     redis.flushdb(done);
   });
 
   grunt.registerTask('db:populate', function() {
     var faker = require('faker');
-    var redis = require('./src/redis_client');
+    var redis = require('./src/redisClient');
     var uuid = require('uuid');
     var done = this.async();
     var commands = [];

@@ -1,7 +1,7 @@
 /* jshint jasmine:true */
 'use strict';
 
-var redis = require('../../src/redis_client');
+var redis = require('../../src/redisClient');
 var Temperature = require('../../src/models/temperature');
 
 describe('Temperature', function() {

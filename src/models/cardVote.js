@@ -1,6 +1,6 @@
 'use strict';
 
-var redis = require('../redis_client');
+var redis = require('../redisClient');
 
 module.exports = function() {
   var self = this;
