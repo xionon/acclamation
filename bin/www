@@ -15,8 +15,12 @@ if (cluster.isMaster) {
   });
 } else {
   var app = require('../src/app');
+  var EventBroadcaster = require('../src/eventBroadcaster');
+
   app.set('port', config.server.port);
   var server = app.listen(app.get('port'), function() {
     debug('Express server listening on port ' + server.address().port);
   });
+
+  (new EventBroadcaster(app)).start();
 }
