@@ -1,17 +1,19 @@
 'use strict';
 
-var Clock = function(container) {
+var Clock = function(moderator) {
   var self = this;
-  var timer;
+  var $clock, timer;
 
-  this.container = $(container);
+  $(function() {
+    $clock = $('#clock');
+  });
 
   timer = setInterval(function() {
     var date = new Date(),
       hours = date.getHours(),
       minutes = date.getMinutes();
 
-    self.container.html(hours + (minutes < 10 ? ':0' : ':') + minutes);
+    $clock.html(hours + (minutes < 10 ? ':0' : ':') + minutes);
   }, 1000);
 };
 

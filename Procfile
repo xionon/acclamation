@@ -1,4 +1,4 @@
-redis: redis-server
-node: DEBUG=acclamation PORT=8000 supervisor --watch "bower_components,config,src" --extensions "js" ./bin/www
+web: DEBUG=acclamation supervisor --watch "bower_components,config,src" --extensions "js" ./bin/www
+redis: redis-server --port 6379
 grunt: grunt watch:javascript_dev
 grunt: grunt watch:stylesheets_dev

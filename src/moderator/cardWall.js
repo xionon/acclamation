@@ -1,23 +1,22 @@
 /* global io:false */
 'use strict';
 
-var CardWall = function() {
+var CardWall = function(moderator) {
   var self = this;
 
   this.voting = false;
 
   this.initialize = function() {
-    self.load().then(self.renderAll).then(self.socketConnect);
+    self.load().then(self.renderAll);
     $(self.setupEvents);
   };
 
-  this.socketConnect = function() {
-    var socket = io.connect();
-    socket.on('card.created', self.appendCard);
-    socket.on('card.updated', self.updateCard);
-    socket.on('card.folded', self.foldCard);
-    socket.on('card.vote', self.updateCard);
-    socket.on('sessionState.changed', self.setState);
+  this.socketBind = function() {
+    moderator.socket.on('card.created', self.appendCard);
+    moderator.socket.on('card.updated', self.updateCard);
+    moderator.socket.on('card.folded', self.foldCard);
+    moderator.socket.on('card.vote', self.updateCard);
+    moderator.socket.on('sessionState.changed', self.setState);
   };
 
   this.load = function() {

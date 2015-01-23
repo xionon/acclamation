@@ -1,26 +1,12 @@
 #!/usr/bin/env node
+// vi: ft=javascript
+
 var debug = require('debug')('acclamation');
 var cluster = require('cluster');
 var config = require('../src/config');
+var app = require('../src/app');
 
-if (cluster.isMaster) {
-  for (var i = 0; i < config.server.numWorkers; i++) {
-    console.log('Forking worker %d of %d', i + 1, config.server.numWorkers);
-    cluster.fork();
-  }
-
-  cluster.on('exit', function(worker, code, signal) {
-    console.log('Worker pid %d died (%s), restarting...', worker.process.pid, signal || code);
-    cluster.fork();
-  });
-} else {
-  var app = require('../src/app');
-  var EventBroadcaster = require('../src/eventBroadcaster');
-
-  app.set('port', config.server.port);
-  var server = app.listen(app.get('port'), function() {
-    debug('Express server listening on port ' + server.address().port);
-  });
-
-  (new EventBroadcaster(app)).start();
-}
+app.set('port', config.server.port);
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});

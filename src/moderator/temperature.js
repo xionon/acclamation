@@ -1,19 +1,22 @@
 /* global Chart:false, io:false */
 'use strict';
 
-var Temperature = function(container) {
+var Temperature = function(moderator) {
   var self = this;
+  var $temperature, $chart;
 
-  this.container = $(container);
+  $(function() {
+    $temperature = $('#temperature');
+  });
+
   this.chart = null;
 
   this.initialize = function() {
-    self.load().then(self.render).then(self.socketConnect);
+    self.load().then(self.render);
   };
 
-  this.socketConnect = function() {
-    var socket = io.connect();
-    socket.on('temperature', self.render);
+  this.socketBind = function() {
+    moderator.socket.on('temperature', self.render);
   };
 
   this.load = function() {
@@ -21,7 +24,7 @@ var Temperature = function(container) {
   };
 
   this.initializeChart = function(data) {
-    self.chart = new Chart(self.container.get(0).getContext('2d')).Bar({
+    self.chart = new Chart($temperature.get(0).getContext('2d')).Bar({
       labels: ['1', '2', '3', '4', '5'],
       datasets: [
         {

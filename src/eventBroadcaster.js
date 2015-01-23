@@ -36,6 +36,7 @@ EventBroadcaster.prototype.start = function() {
 
     data = parsed.data;
 
+    console.log('Broadcasting event', event, data);
     app.io.broadcast(event, data);
   });
   this.redis.subscribe('acclamation.events');

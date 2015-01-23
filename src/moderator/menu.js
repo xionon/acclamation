@@ -1,30 +1,30 @@
 /* global io:false */
 'use strict';
 
-var Menu = function() {
+var Menu = function(moderator) {
   var self = this;
   var $menu, $links;
 
-  this.initialize = function() {
+  $(function() {
     $menu = $('menu');
     $links = $menu.find('a');
 
-    self.loadState()
-      .then(self.setState)
-      .then(self.socketConnect)
-      .then(self.adapt);
-
     $(window).resize(self.adapt);
     $menu.delegate('a.session-state', 'click', self.handleStateChange);
+  });
+
+  this.initialize = function() {
+    self.loadState()
+      .then(self.setState)
+      .then(self.adapt);
   };
 
   this.loadState = function() {
     return $.get('/session/state');
   };
 
-  this.socketConnect = function() {
-    var socket = io.connect();
-    socket.on('sessionState.changed', self.setState);
+  this.socketBind = function() {
+    moderator.socket.on('sessionState.changed', self.setState);
   };
 
   this.setState = function(state) {
