@@ -50,8 +50,9 @@ var CardForm = function(client) {
       .stop(true, true)
       .slideDown('fast')
       .fadeIn('fast');
-    $textarea
-      .slideUp('fast');
+    if ($textarea.is(':visible')) {
+      $textarea.slideUp('fast');
+    }
   };
 
   this.persistCard = function(e) {
