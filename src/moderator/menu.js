@@ -1,4 +1,3 @@
-/* global io:false */
 'use strict';
 
 var Menu = function(moderator) {

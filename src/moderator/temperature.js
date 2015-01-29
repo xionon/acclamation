@@ -1,9 +1,9 @@
-/* global Chart:false, io:false */
+/* global Chart:false */
 'use strict';
 
 var Temperature = function(moderator) {
   var self = this;
-  var $temperature, $chart;
+  var $temperature;
 
   $(function() {
     $temperature = $('#temperature');

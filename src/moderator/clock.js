@@ -1,7 +1,6 @@
 'use strict';
 
 var Clock = function(moderator) {
-  var self = this;
   var $clock, timer;
 
   $(function() {
