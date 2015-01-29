@@ -2,10 +2,11 @@
 // vi: ft=javascript
 
 var debug = require('debug')('acclamation');
-var config = require('../src/config');
 var app = require('../src/app');
+var config = require('../src/config');
 
 app.set('port', config.server.port);
+
 var server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
