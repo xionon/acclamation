@@ -6,6 +6,8 @@ can be incredibly useful; but with large teams, retros can become tedious and
 inefficient.  Instead of writing sticky notes and cramming around a white board,
 Acclamation allows teams to substitute technology for tedium.
 
+[![Analytics](https://ga-beacon.appspot.com/UA-43004538-2/matthewpatterson/acclamation)](https://github.com/igrigorik/ga-beacon)
+
 Requirements
 ------------
 
