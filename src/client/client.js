@@ -11,7 +11,6 @@ var Voting = require('./voting');
 var Client = function() {
   var self = this;
 
-  this.sessionId = self.detectSessionId();
   this.socket = io.connect();
   this.temperature = new Temperature(this);
   this.cardWall = new CardWall(this);
@@ -21,6 +20,8 @@ var Client = function() {
   this.sessionManager = new SessionManager(this);
 
   this.initialize = function() {
+    self.sessionId = self.detectSessionId();
+
     var next = self.showTemperature;
 
     if (self.temperature.hasVoted()) {
@@ -74,7 +75,7 @@ var Client = function() {
   };
 
   this.detectSessionId = function() {
-    var matches = window.location.pathname.match(/\/client\/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}[a-f0-9]{4}-[a-f0-9]{12})/i);
+    var matches = window.location.pathname.match(/\/client\/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/i);
     if (matches === null) {
       return null;
     } else {
