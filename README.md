@@ -59,3 +59,9 @@ You can also pre-populate Redis with data using:
 
 Since data in Redis is not persisted to disk, you will need to run this command
 while the application is running.
+
+Contributors
+------------
+
+* [Matthew Patterson](https://github.com/matthewpatterson)
+* [Kevin Boschert](https://github.com/kcboschert)
